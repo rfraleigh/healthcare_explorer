@@ -1,0 +1,1724 @@
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="uft8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Guinea Medical Analytics</title>
+    <!--<link rel="stylesheet" type="text/css" href="data/dcjs_example/dc.css"/>-->
+
+    <style>
+
+
+        #arl2017list table, .dc-data-grid {clear:both;}
+        .dc-table-label {background: #F5F5F5; font-weight:bold; }
+        .x line {stroke:none;}
+
+        body {font-family: arial, helvetica, sans-serif;}
+
+        .dc-data-grid, .dc-grid-group {clear:both}
+        .dc-data-count {clear:both;}
+        .dc-grid-group {
+          background-color: #F5F5F5;
+          border: 1px solid #E3E3E3;
+        border-radius: 4px;
+
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+        margin-bottom: 20px;
+        min-height: 20px;
+        padding: 10px;
+        }
+
+        .dc-grid-item {
+        float:left;
+        margin:0 10px 10px 0;
+        padding:5px;
+        width:425px;
+              background-color: #F8F8F8;
+              border-color: #E7E7E7;
+              border-radius: 4px;
+              text-align:center;
+              box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+        height:600px;
+        overflow:auto;
+
+        }
+        .dc-grid-item img {width:120px;height:150px}
+        .dc-grid-top h1 {font-size:22px;}
+        .dc-grid-top h2 {font-size:16px;font-weight:600;}
+        .dc-grid-top h3 {font-size:14px;}
+        .dc-chart g.row text {
+                fill: black;
+            }
+
+        div.tooltip {
+            position: relative;
+            text-align: center;
+            width: 120px;
+            height: 28px;
+            padding: 2px;
+            padding-top: 6px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+
+        }
+        div.tooltip_long {
+            position: relative;
+            text-align: center;
+            width: 160px;
+            height: 28px;
+            padding: 2px;
+            padding-top: 6px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+
+        }
+        #exTab1 .tab-content {
+          color : white;
+          background-color: #428bca;
+          padding : 5px 15px;
+        }
+        #exTab1 .nav-pills > li > a {
+              border-radius: 0;
+            }
+        .select_toggle{
+            opacity:.5;
+        }
+
+        div.training g.row text,
+        div.region g.row text,
+        div.prefecture g.row text,
+                div.affiliation g.row text,
+
+        div.public_private g.row text{
+            fill: black;
+            font-size:10pt;
+        }
+
+        .row {
+        padding-left:25px;
+            padding-right:50px;
+            padding-top:25px;
+        }
+        .natl_cluster {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            padding-top: 7px;
+            text-align: center;
+            border-radius: 50%;
+            font: 16px "Helvetica Neue", Arial, Helvetica, sans-serif;
+            font-weight:bold;
+
+            background-image:
+            radial-gradient(
+              #FD8D08,
+              #FD8D08
+            );
+		}
+
+        .reg_cluster {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            padding-top: 7px;
+            text-align: center;
+            border-radius: 50%;
+            font: 16px "Helvetica Neue", Arial, Helvetica, sans-serif;
+            font-weight:bold;
+            background-image:
+            radial-gradient(
+              #C89BFF,
+              #C89BFF
+            );
+		}
+
+        .pref_cluster {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            padding-top: 7px;
+            text-align: center;
+            border-radius: 50%;
+            font: 16px "Helvetica Neue", Arial, Helvetica, sans-serif;
+            font-weight:bold;
+
+            background-image:
+            radial-gradient(
+              #97EC7D,
+              #97EC7D
+            );
+		}
+
+        .center_cluster {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            padding-top: 7px;
+            text-align: center;
+            border-radius: 50%;
+            font: 16px "Helvetica Neue", Arial, Helvetica, sans-serif;
+            font-weight:bold;
+            background-image:
+            radial-gradient(
+              #6B98FF,
+              #6B98FF
+            );
+		}
+        .panel{
+            background:white;
+            box-shadow: 1px 1px lightgray;
+            padding-top:15px;
+            padding-bottom:25px;
+            padding-left:25px;
+            margin-right:5px;
+            margin-bottom:25px;
+        }
+    .landing {
+            background:rgba(255, 255, 255, 0.95);
+            padding:25px;
+
+        }
+    .audience {
+      min-height: 30rem;
+      position: relative;
+      display: table;
+      width: 100%;
+      height: 100%;
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), url("static/site/img/daily-report-unsplash.jpg");
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    </style>
+
+</head>
+<body>
+    <!--<link href="data/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="data/dcjs/d3_3_5_17.js"></script>
+    <script type="text/javascript" src="data/dcjs/crossfilter2_1.4.0-alpha.6.js"></script>
+    <script type="text/javascript" src="data/dcjs_example/dc.js"></script>
+    <script type="text/javascript" src="data/dcjs_example/data-grid.js"></script>
+    <script type="text/javascript" src="data/dcjs_example/underscore-min.js"></script>
+
+    <script src="data/dcjs_example/jquery.min.js"></script>
+    <script src="data/dcjs_example/jquery.lazyload.js"></script>-->
+    <script src="static/dcjs_example/jquery_1.11.min.js"></script>
+
+    <script type="text/javascript" src="static/dc.js_2.1.10/web/js/d3.js"></script>
+    <script type="text/javascript" src="static/dc.js_2.1.10/web/js/crossfilter.js"></script>
+    <script type="text/javascript" src="static/dc.js_2.1.10/web/js/dc.js"></script>
+    <script type="text/javascript" src= "static/dc.js_2.1.10/src/data-grid.js"></script>
+    <script type="text/javascript" src="static/dcjs_example/underscore-min.js"></script>
+
+    <script type="text/javascript" src="static/dc_leaflet/web/js/leaflet.js"></script>
+    <script type="text/javascript" src="static/dc_leaflet/web/js/polyline.encoded.js"></script>
+
+    <script type="text/javascript" src= "static/dc_leaflet/web/js/colorbrewer.js"></script>
+    <script type="text/javascript" src="static/dc_leaflet/web/js/leaflet.markercluster.js"></script>
+    <script type="text/javascript" src="static/dc_leaflet/web/js/dc.leaflet.js"></script>
+
+
+    <!--<script src="leaflet-routing-machine-3.2.7/leaflet-routing-machine-3.2.7/dist/leaflet-routing-machine.js"></script>
+    <link rel="stylesheet" href="leaflet-routing-machine-3.2.7/leaflet-routing-machine-3.2.7/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />-->
+
+
+    <link type="text/css" href= "static/dc.js_2.1.10/web/css/dc.css" rel="stylesheet"/>
+    <link type="text/css" href= "static/bootstrap_4.0/css/bootstrap_4.0.0-alpha.3.css" rel="stylesheet">
+
+    <link type="text/css" href= "static/dc_leaflet/web/css/leaflet.css" rel="stylesheet"/>
+	<link type="text/css" href= "static/dc_leaflet/web/css/MarkerCluster.Default.css" rel="stylesheet"/>
+	<link type="text/css" href= "static/dc_leaflet/web/css/MarkerCluster.css" rel="stylesheet"/>
+	<link type="text/css" href= "static/dc_leaflet/web/css/leaflet-legend.css" rel="stylesheet"/>
+
+    <script>
+
+        function grid (selector,data) {
+          var ndx = crossfilter(data),
+              all = ndx.groupAll();
+
+          console.log(data);
+          function test_search(dim, q) {
+              var pattern = '.*q.*';
+              pattern = pattern.replace('q',q);
+              var re = new RegExp(pattern,"i");
+
+              if (q != '') {
+                  dim.filter(function (d) {
+                      return 0 == d.search(re);
+
+                  });
+              } else {
+                  dim.filterAll();
+              }
+              dc.redrawAll()
+          }
+          function roundMonths(date) {
+            date.setDate(1);
+            return date;}
+
+          function remove_empty_bins(source_group) {
+                return {
+                    all:function () {
+                        return source_group.top(15).filter(function(d) {
+                            return d.value != 0;
+                        });
+                    }
+                };
+            }
+
+            function remove_empty_bins_50(source_group) {
+                return {
+                    all:function () {
+                        return source_group.top(50).filter(function(d) {
+                            return d.value != 0;
+                        });
+                    }
+                };
+            }
+
+           function remove_empty_text_bins(source_group) {
+                return {
+                    all:function () {
+                        return source_group.all().filter(function(d) {
+                            return d.key != "";
+                        });
+                    }
+                };
+            }
+            function remove_empty_bins_all(source_group) {
+                return {
+                    all:function () {
+                        return source_group.all().filter(function(d) {
+                            return d.value != 0;
+                        });
+                    }
+                };
+            }
+            function rotateBarChartLabels(classvar) {
+            d3.selectAll(selector + ' .'+classvar+'  g .axis.x text')
+                .style("text-anchor", "end")
+                .attr("transform", function (d) {
+                    return "rotate(-55, -4, 9) ";
+                });
+        }
+        function toTitleCase(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+function order_by_name(chart){
+                chart.ordering(function (d) {
+                            return d.key
+                        });
+                chart.redraw();
+            }
+
+            function order_by_value(chart){
+                chart.label(function (d) {
+
+                            return '(' + d.value + ')  ' + toTitleCase(d.key)
+                        })
+                    .ordering(function (d) {
+                            return -d.value
+                        });
+                chart.redraw();
+            }
+
+        //-----------------------------------------------------
+d3.csv("data_randomized/edge_repository_for_distribution_withTravel.csv" , function(error, links) {
+    if (error) throw error;
+    console.log(links);
+
+    var edx = crossfilter(links),
+              all_edges = edx.groupAll();
+
+///////////////CREATE ADMINISTRATIVE DISTRICT LINKS////////////////////
+    var cent_pref_dim = edx.dimension(function (d) {
+        data.forEach(function(e){
+            if(e.name_of_laboratory ==d.start){d.start_region = e.region;d.start_prefecture = e.region}
+            if(e.name_of_laboratory ==d.end){d.end_region = e.region;d.end_prefecture = e.region}
+        })
+        if (d.start_region==d.end_region & d.start_type=='center' & d.end_type=='prefecture'){
+        return [d.start,d.end];}
+        else{return ""}
+    }, false);
+    var cent_pref_Group = (cent_pref_dim.group().reduceSum(function (d) {
+        return 1;
+    }));
+   //console.log(cent_pref_Group.all())
+
+    //---------------------------------------------------------
+     var cent_reg_dim = edx.dimension(function (d) {
+        data.forEach(function(e){
+            if(e.name_of_laboratory ==d.start){d.start_region = e.region;d.start_prefecture = e.region}
+            if(e.name_of_laboratory ==d.end){d.end_region = e.region;d.end_prefecture = e.region}
+        })
+        if (d.start_region==d.end_region & d.start_type=='center' & d.end_type=='regional'){
+        return [d.start,d.end];}
+        else{return ""}
+    }, false);
+    var cent_reg_Group = (cent_reg_dim.group().reduceSum(function (d) {
+        return 1;
+    }));
+   console.log(cent_reg_Group.all())
+    //---------------------------------------------------------
+     var pref_reg_dim = edx.dimension(function (d) {
+        data.forEach(function(e){
+            if(e.name_of_laboratory ==d.start){d.start_region = e.region;d.start_prefecture = e.region}
+            if(e.name_of_laboratory ==d.end){d.end_region = e.region;d.end_prefecture = e.region}
+        })
+        if (d.start_region==d.end_region & d.start_type=='prefecture' & d.end_type=='regional'){
+        return [d.start,d.end];}
+        else{return ""}
+    }, false);
+    var pref_reg_Group = (pref_reg_dim.group().reduceSum(function (d) {
+        return 1;
+    }));
+   //console.log(pref_reg_Group.all())
+    //---------------------------------------------------------
+     var reg_natl_dim = edx.dimension(function (d) {
+        data.forEach(function(e){
+            if(e.name_of_laboratory ==d.start){d.start_region = e.region;d.start_prefecture = e.region}
+            if(e.name_of_laboratory ==d.end){d.end_region = e.region;d.end_prefecture = e.region}
+        })
+        if (d.start_type=='regional' & d.end_type=='national'){
+        return [d.start,d.end];}
+        else{return ""}
+    }, false);
+    var reg_natl_Group = (reg_natl_dim.group().reduceSum(function (d) {
+        return 1;
+    }));
+    //console.log(reg_natl_Group.all())
+    //---------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------
+    cent_pref_list = [];
+    cent_pref_Group.all().forEach(function(e){
+                cent_pref_list.push(e.key)
+        })
+    cent_reg_list = [];
+    cent_reg_Group.all().forEach(function(e){
+                cent_reg_list.push(e.key)
+        })
+    pref_reg_list = [];
+    pref_reg_Group.all().forEach(function(e){
+                pref_reg_list.push(e.key)
+        })
+    reg_natl_list = [];
+    reg_natl_Group.all().forEach(function(e){
+                reg_natl_list.push(e.key)
+        })
+
+
+
+d3.select('#map').style('height', '500px').style('width', $('div#map').width())
+    var map = L.map('map').setView([10.505, -11.09], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var markers = L.markerClusterGroup();
+    var natl_markers = L.markerClusterGroup(
+        {
+            maxClusterRadius: 5,
+            iconCreateFunction: function (cluster) {
+                var markers = cluster.getAllChildMarkers();
+                var n = 0;
+                for (var i = 0; i < markers.length; i++) {
+                    n += markers[i].number;
+                }
+                return L.divIcon({html: markers.length, className: 'natl_cluster', iconSize: L.point(30, 30)});
+            }
+        }
+    )
+
+    var reg_markers = L.markerClusterGroup(
+        {
+            maxClusterRadius: 5,
+            iconCreateFunction: function (cluster) {
+                var markers = cluster.getAllChildMarkers();
+                var n = 0;
+                for (var i = 0; i < markers.length; i++) {
+                    n += markers[i].number;
+                }
+                return L.divIcon({html: markers.length, className: 'reg_cluster', iconSize: L.point(30, 30)});
+            }
+        }
+    );
+    var pref_markers = L.markerClusterGroup(
+        {
+            maxClusterRadius: 5,
+            iconCreateFunction: function (cluster) {
+                var markers = cluster.getAllChildMarkers();
+                var n = 0;
+                for (var i = 0; i < markers.length; i++) {
+                    n += markers[i].number;
+                }
+                return L.divIcon({html: markers.length, className: 'pref_cluster', iconSize: L.point(30, 30)});
+            }
+        }
+    );
+    var cent_markers = L.markerClusterGroup(
+        {
+            maxClusterRadius: 10,
+            iconCreateFunction: function (cluster) {
+                var markers = cluster.getAllChildMarkers();
+                var n = 0;
+                for (var i = 0; i < markers.length; i++) {
+                    n += markers[i].number;
+                }
+                return L.divIcon({html: markers.length, className: 'center_cluster', iconSize: L.point(30, 30)});
+            }
+        }
+    );
+
+
+    var facility_layers = [];
+    var national_layers = [];
+    var regional_layers = [];
+    var prefecture_layers = [];
+    var center_layers = [];
+
+    var leaflet_group_layers = [
+        center_layers,
+        prefecture_layers,
+        regional_layers,
+        national_layers
+    ];
+    var leaflet_group_markers = [
+        cent_markers,
+        pref_markers,
+        reg_markers,
+        natl_markers
+    ];
+
+
+
+    //These are the links grouped by type and filtered by admin reporting hierarchy.
+    var center_prefecture = links.filter(function(d){return d.type=='center_prefecture'})
+        .filter(function(d){
+        if(cent_pref_list.filter(function(q){return _.isEqual(q,[d.start,d.end])}).length!=0){return d};
+        });
+
+    var center_regional = links.filter(function(d){return d.type=='center_regional'})
+        .filter(function(d){
+        if(cent_reg_list.filter(function(q){return _.isEqual(q,[d.start,d.end])}).length!=0){return d};
+        });
+    var prefecture_regional = links.filter(function(d){return d.type=='prefecture_regional'})
+        //.filter(function(d){
+        //if(pref_reg_list.filter(function(q){return _.isEqual(q,[d.start,d.end])}).length!=0){return d};
+        //});
+    var regional_national = links.filter(function(d){return d.type=='regional_national'})
+        //.filter(function(d){
+        //if(reg_natl_list.filter(function(q){return _.isEqual(q,[d.start,d.end])}).length!=0){return d};
+        //});
+
+    var center_prefecture_dict =[];
+    for (var cp in center_prefecture){
+        center_prefecture_dict[center_prefecture[cp]['index']]={
+            'polyline':L.polyline(L.PolylineUtil.decode(center_prefecture[cp]['polyline'], 5), {color: 'green'}),
+            'start':center_prefecture[cp]['start'],
+            'end':center_prefecture[cp]['end'],
+            'index':center_prefecture[cp]['index']
+
+        }
+    }
+    var center_regional_dict =[];
+    for (var cr in center_regional){
+       center_regional_dict[center_regional[cr]['index']]={
+            'polyline':L.polyline(L.PolylineUtil.decode(center_regional[cr]['polyline'], 5), {color: 'purple'}),
+            'start':center_regional[cr]['start'],
+            'end':center_regional[cr]['end'],
+            'index':center_regional[cr]['index']
+        }
+    }
+   var  prefecture_regional_dict =[];
+    for (var pr in prefecture_regional){
+       prefecture_regional_dict[prefecture_regional[pr]['index']]={
+            'polyline':L.polyline(L.PolylineUtil.decode(prefecture_regional[pr]['polyline'], 5), {color: 'purple'}),
+            'start':prefecture_regional[pr]['start'],
+            'end':prefecture_regional[pr]['end'],
+            'index':prefecture_regional[pr]['index']
+        }
+    }
+    var regional_national_dict =[];
+    for (var rn in regional_national){
+        regional_national_dict[regional_national[rn]['index']]={
+            'polyline':L.polyline(L.PolylineUtil.decode(regional_national[rn]['polyline'], 5), {color: 'orange'}),
+            'start':regional_national[rn]['start'],
+            'end':regional_national[rn]['end'],
+            'index':regional_national[rn]['index']
+        }
+    }
+
+
+
+
+//------ STYLE -------------
+        var pixels_per_row = 30;
+        var region_set = [];
+        var region_dict = [];
+
+        //----------------------------------------
+          data.forEach(function(d,i){if (typeof d.training !="undefined") d.training = d.training.split(',');} )
+          var bar_training =dc.rowChart(selector + " .training");
+
+          var training = ndx.dimension(function(d) {
+              if (typeof d.training == "undefined") return "";
+              return d.training;
+              },true);
+          var trainingGroup   = training.group().reduceSum(function(d) { return 1; });
+
+          //----------------------------------------------------
+            var bar_region =dc.rowChart(selector + " .region");
+
+          var region = ndx.dimension(function(d) {
+              if (typeof d.region == "undefined") return "";
+              return d.region;
+              },false);
+          var regionGroup   = region.group().reduceSum(function(d) { return 1; });
+          //-----------------------------------------------------------
+            var bar_prefecture =dc.rowChart(selector + " .prefecture");
+
+          var prefecture = ndx.dimension(function(d) {
+              if (typeof d.prefecture == "undefined") return "";
+              return d.prefecture;
+              },false);
+          var prefectureGroup   = prefecture.group().reduceSum(function(d) { return 1; });
+          //------------------------------------------------------
+//----------------------------------------------------
+            var bar_affiliation =dc.rowChart(selector + " .affiliation");
+
+          var affiliation = ndx.dimension(function(d) {
+              if (typeof d.affiliation == "undefined") return "";
+              return d.affiliation;
+              },false);
+          var affiliationGroup   = affiliation.group().reduceSum(function(d) { return 1; });
+
+
+
+//----------------------------------------
+          //----------------------------------------
+          var phone = ndx.dimension(function(d) {
+              if (typeof d.phone == "undefined") return "";
+              return d.phone;
+              });
+          //----------------------------------------
+          var fax = ndx.dimension(function(d) {
+              if (typeof d.fax == "undefined") return "";
+              return d.fax;
+              });
+          //----------------------------------------
+          var computer = ndx.dimension(function(d) {
+              if (typeof d.computer == "undefined") return "";
+              return d.computer;
+              });
+          //----------------------------------------
+          var internet = ndx.dimension(function(d) {
+              if (typeof d.internet == "undefined") return "";
+              return d.internet;
+              });
+          //----------------------------------------
+          var tdr_palu = ndx.dimension(function(d) {
+              if (typeof d.tdr_palu == "undefined") return "";
+              return d.tdr_palu;
+              });
+          //----------------------------------------
+          var tdr_hiv = ndx.dimension(function(d) {
+              if (typeof d.tdr_hiv == "undefined") return "";
+              return d.tdr_hiv;
+              });
+          //----------------------------------------
+          var widal = ndx.dimension(function(d) {
+              if (typeof d.widal == "undefined") return "";
+              return d.widal;
+              });
+          //----------------------------------------
+          var hb_sahli = ndx.dimension(function(d) {
+              if (typeof d.hb_sahli == "undefined") return "";
+              return d.hb_sahli;
+              });
+
+          //----------------------------------------
+          var electricity = ndx.dimension(function(d) {
+              if (typeof d.electricity_existence == "undefined") return "";
+              return d.electricity_existence;
+              });
+
+
+
+          d3.selectAll(".checkbox").on("change",update);
+        update();
+
+
+        function update(){
+              cb = d3.select(this);
+              checkboxes(cb,
+                  {
+                  'Phone':phone,
+                  'Fax':fax,
+                  'Computer':computer,
+                  'Internet':internet,
+                   'Electricity':electricity,
+                  'TDR_Palu':tdr_palu,
+                  'TDR_HIV':tdr_hiv,
+                  'Widal':widal,
+                  'HB_Sahli':hb_sahli
+                  }
+                  )
+        }
+        function checkboxes(selector,checklist){
+            Object.keys(checklist).forEach(function(val,ind){
+            if(selector.property("checked")){
+                if (selector.property("value")==val) {
+                    checklist[val].filter(function(d){if (d==1){return d}});
+
+
+                    facilityGroup.all().forEach(function(d){
+                if(d.value!=0){
+                    if (Object.keys(national_layers).indexOf(d.inst)!=-1) {
+                        if (map.hasLayer(national_layers[d.inst]) == false) {
+                            natl_markers.addLayer(national_layers[d.inst])
+                        }
+                    }
+                    if (Object.keys(regional_layers).indexOf(d.inst)!=-1) {
+                        if (map.hasLayer(regional_layers[d.inst]) == false) {
+                            reg_markers.addLayer(regional_layers[d.inst])
+                        }
+                    }
+                    if (Object.keys(prefecture_layers).indexOf(d.inst)!=-1) {
+                        if (map.hasLayer(prefecture_layers[d.inst]) == false) {
+                            pref_markers.addLayer(prefecture_layers[d.inst])
+                        }
+                    }
+                    if (Object.keys(center_layers).indexOf(d.inst)!=-1) {
+                        if (map.hasLayer(center_layers[d.inst]) == false) {
+                            cent_markers.addLayer(center_layers[d.inst])
+                        }
+                    }
+                }
+                if(d.value==0){
+                    if (Object.keys(national_layers).indexOf(d.inst)!=-1) {
+                        natl_markers.removeLayer(national_layers[d.inst])
+                    }
+                    if (Object.keys(regional_layers).indexOf(d.inst)!=-1) {
+                        reg_markers.removeLayer(regional_layers[d.inst])
+                    }
+                    if (Object.keys(prefecture_layers).indexOf(d.inst)!=-1) {
+                        pref_markers.removeLayer(prefecture_layers[d.inst])
+                    }
+                    if (Object.keys(center_layers).indexOf(d.inst)!=-1) {
+                        cent_markers.removeLayer(center_layers[d.inst])
+                    }
+                }})
+
+                    dc.redrawAll()
+                }
+              }
+                if(selector.property("checked")==false){
+                    if (selector.property("value")==val) {
+                        //console.log('Uncheck');
+                        checklist[val].filter(null);
+
+                        facilityGroup.all().forEach(function(d){
+                if(d.value!=0){
+                    if (Object.keys(national_layers).indexOf(d.inst)!=-1) {
+                        if (map.hasLayer(national_layers[d.inst]) == false) {
+                            natl_markers.addLayer(national_layers[d.inst])
+                        }
+                    }
+                    if (Object.keys(regional_layers).indexOf(d.inst)!=-1) {
+                        if (map.hasLayer(regional_layers[d.inst]) == false) {
+                            reg_markers.addLayer(regional_layers[d.inst])
+                        }
+                    }
+                    if (Object.keys(prefecture_layers).indexOf(d.inst)!=-1) {
+                        if (map.hasLayer(prefecture_layers[d.inst]) == false) {
+                            pref_markers.addLayer(prefecture_layers[d.inst])
+                        }
+                    }
+                    if (Object.keys(center_layers).indexOf(d.inst)!=-1) {
+                        if (map.hasLayer(center_layers[d.inst]) == false) {
+                            cent_markers.addLayer(center_layers[d.inst])
+                        }
+                    }
+                }
+                if(d.value==0){
+                    if (Object.keys(national_layers).indexOf(d.inst)!=-1) {
+                        natl_markers.removeLayer(national_layers[d.inst])
+                    }
+                    if (Object.keys(regional_layers).indexOf(d.inst)!=-1) {
+                        reg_markers.removeLayer(regional_layers[d.inst])
+                    }
+                    if (Object.keys(prefecture_layers).indexOf(d.inst)!=-1) {
+                        pref_markers.removeLayer(prefecture_layers[d.inst])
+                    }
+                    if (Object.keys(center_layers).indexOf(d.inst)!=-1) {
+                        cent_markers.removeLayer(center_layers[d.inst])
+                    }
+                }})
+
+                        dc.redrawAll()
+                    }
+                }
+            })
+        }
+
+        bar_region
+            .width($('div.region').width())
+            .height(regionGroup.all().length*pixels_per_row)
+            .gap(1)
+            .margins({top: 0, right: 25, bottom: 50, left: 10})
+            .x(d3.scale.ordinal())
+            .labelOffsetX(5)
+            .label(function (d) {
+                        return '(' + d.value + ')  ' + toTitleCase(d.key)
+                    })
+            .ordering(function(kv) { return -kv.value; })
+            .elasticX(true)
+            .dimension(region)
+            .group(regionGroup);
+
+        bar_prefecture
+            .width($('div.prefecture').width())
+            .height(prefectureGroup.all().length*pixels_per_row)
+            .gap(1)
+            .margins({top: 0, right: 25, bottom: 50, left: 10})
+            .x(d3.scale.ordinal())
+            .labelOffsetX(5)
+            .label(function (d) {
+                        return '(' + d.value + ')  ' + toTitleCase(d.key)
+                    })
+            .ordering(function(kv) { return -kv.value; })
+            .elasticX(true)
+            .dimension(prefecture)
+            .group(prefectureGroup);
+
+        bar_affiliation
+            .width($('div.affiliation').width())
+            .height(affiliationGroup.all().length*pixels_per_row)
+            .gap(1)
+            .margins({top: 0, right: 25, bottom: 50, left: 10})
+            .x(d3.scale.ordinal())
+            .labelOffsetX(5)
+            .label(function (d) {
+                        return '(' + d.value + ')  ' + toTitleCase(d.key)
+                    })
+            .ordering(function(kv) { return -kv.value; })
+            .elasticX(true)
+            .dimension(affiliation)
+            .group(affiliationGroup);
+
+         bar_training
+            .width($('div.training').width())
+            .height(trainingGroup.all().length*pixels_per_row)
+            .gap(1)
+            .margins({top: 0, right: 25, bottom: 50, left: 10})
+            .x(d3.scale.ordinal())
+            .labelOffsetX(5)
+            .label(function (d) {
+                        return '(' + d.value + ')  ' + toTitleCase(d.key)
+                    })
+            .ordering(function(kv) { return -kv.value; })
+            .elasticX(true)
+            .dimension(training)
+            .group(trainingGroup);
+
+
+
+
+         var bar_public_private = dc.rowChart(selector +  " .public_private")
+         var public_private = ndx.dimension(function(d) {
+              if (typeof d.public_private == "undefined") return "";
+              return d.public_private;
+              });
+
+          var public_privateGroup   = public_private.group().reduceSum(function(d) {   return 1; });
+            console.log(public_privateGroup.all().length*pixels_per_row)
+
+          bar_public_private
+            .width($('div.public_private').width())
+            .height(public_privateGroup.all().length*pixels_per_row+50)
+            .gap(1)
+            .margins({top: 0, right: 0, bottom: 50, left: 10})
+            .x(d3.scale.ordinal())
+            .labelOffsetX(5)
+              .label(function (d) {
+                if (d.key==""){
+                return '(' + d.value + ')  N/A'}
+                else {
+                return '(' + d.value + ')  ' + toTitleCase(d.key)}
+                        })
+
+            .ordering(function(kv) { return -kv.value; })
+            .elasticX(true)
+            .dimension(public_private)
+            .group(public_privateGroup);
+
+//------------------------------
+        var staff = ndx.dimension(function (d) {
+                    if (typeof d.total_staff == "undefined") return "";
+                    return d.total_staff;
+                }, false);
+        var staffGroup = remove_empty_text_bins(staff.group().reduceSum(function (d) {
+            return 1;
+        }));
+        //------------------------------
+        var patients = ndx.dimension(function (d) {
+                    if (typeof d.patients_per_day == "undefined") return "";
+                    return d.patients_per_day;
+                }, false);
+        var patientsGroup = remove_empty_text_bins(patients.group().reduceSum(function (d) {
+            return 1;
+        }));
+
+    ///------------- BAR CHARTS
+       var  bar_staff = dc.barChart(selector +' .staff');
+         bar_staff
+                        .width($('div.staff').width())
+                        .height($('div.staff').height())
+                        .margins({top: 10, right: 10, bottom: 60, left: 50})
+                        .x(d3.scale.linear().domain([1,40]).range([1,40]))
+                        .yAxis(d3.svg.axis().ticks(4).orient('left'))
+                        .xAxis(d3.svg.axis().ticks(4).orient('bottom'))
+                        .brushOn(true)
+                        .elasticX(false)
+                        .elasticY(true)
+                        //.xAxisLabel('Publication Date')
+                        .yAxisLabel('# Facilities')
+                        .dimension(staff)
+                        .barPadding(0.1)
+                        .outerPadding(0.05)
+                        .group(staffGroup)
+                        .on('pretransition', function () {
+                            rotateBarChartLabels('staff');
+                            //bar_date.select('g text.x-axis-label').attr("y", "10")
+                            //bar_date.select('g text.y-axis-label').attr("y", "10")
+                        });
+        //------------------------------
+        var bar_patients = dc.barChart(selector +' .patients');
+         bar_patients
+                        .width($('div.patients').width())
+                        .height($('div.patients').height())
+                        .margins({top: 10, right: 10, bottom: 60, left: 50})
+                        .x(d3.scale.linear().domain([1,60]).range([1,60]))
+                        .yAxis(d3.svg.axis().ticks(4).orient('left'))
+                                     .xAxis(d3.svg.axis().ticks(4).orient('bottom'))
+
+                        .brushOn(true)
+                        .elasticX(false)
+                        .elasticY(true)
+                        //.xAxisLabel('Publication Date')
+                        .yAxisLabel('# Facilities')
+                        .dimension(patients)
+                        .barPadding(0.1)
+                        .outerPadding(0.05)
+                        .group(patientsGroup)
+                        .on('pretransition', function () {
+                            rotateBarChartLabels('patients');
+                            //bar_date.select('g text.x-axis-label').attr("y", "10")
+                            //bar_date.select('g text.y-axis-label').attr("y", "10")
+                        });
+         //--------------------------------------------
+        d3.select('span.staff_reset')
+            .on('click',function(){
+                bar_staff.filterAll();
+                dc.redrawAll();
+            }).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            })
+
+
+
+        d3.select('span.patient_reset').on('click',function(){
+                bar_patients.filterAll();
+                dc.redrawAll();
+            }).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            })
+
+
+        d3.select('span.training_reset').on('click',function(){
+                bar_training.filterAll();
+                dc.redrawAll();
+            }).on('mouseover',function(d){
+
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            })
+        d3.select('span.training_name').on('click',function(){return order_by_name(bar_training)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+        d3.select('span.training_value').on('click',function(){return order_by_value(bar_training)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+
+
+        d3.select('span.affiliation_reset')
+            .on('click',function(){
+                bar_affiliation.filterAll();
+                dc.redrawAll();
+            }).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            })
+        d3.select('span.affiliation_name').on('click',function(){return order_by_name(bar_affiliation)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+        d3.select('span.affiliation_value').on('click',function(){return order_by_value(bar_affiliation)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+
+
+        d3.select('span.sector_reset').on('click',function(){
+                bar_public_private.filterAll();
+                dc.redrawAll();
+            }).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            })
+        d3.select('span.sector_name').on('click',function(){return order_by_name(bar_public_private)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+        d3.select('span.sector_value').on('click',function(){return order_by_value(bar_public_private)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+
+
+        d3.select('span.region_reset').on('click',function(){
+                bar_region.filterAll();
+                dc.redrawAll();
+            }).on('mouseover',function(d){
+
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            })
+        d3.select('span.region_name').on('click',function(){return order_by_name(bar_region)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+        d3.select('span.region_value').on('click',function(){return order_by_value(bar_region)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+
+
+        d3.select('span.prefecture_reset').on('click',function(){
+                bar_prefecture.filterAll();
+                dc.redrawAll();
+            }).on('mouseover',function(d){
+
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            })
+        d3.select('span.prefecture_name').on('click',function(){return order_by_name(bar_prefecture)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+        d3.select('span.prefecture_value').on('click',function(){return order_by_value(bar_prefecture)}).on('mouseover',function(d){
+            d3.select(this).style("font-weight","bold").style('cursor', 'pointer')
+            })
+            .on('mouseout',function(d){
+            d3.select(this).style("font-weight","normal")
+            });
+
+
+
+
+
+
+
+
+    //---------------------------------------------------------
+    console.log(cent_pref_list)
+    var LeafIcon = L.Icon.extend({
+        options: {
+            //shadowUrl: 'leaf-shadow.png',
+            iconSize: [25, 40],
+            //shadowSize:   [50, 64],
+            iconAnchor: [0, 30],
+            //shadowAnchor: [4, 62],
+            popupAnchor: [0, -40]
+        }
+    });
+    var nationalIcon = new LeafIcon({iconUrl: 'static/Google_Maps_Markers/orange_MarkerN.png'}),
+        regionalIcon = new LeafIcon({iconUrl: 'static/Google_Maps_Markers/purple_MarkerR.png'}),
+        prefectureIcon = new LeafIcon({iconUrl: 'static/Google_Maps_Markers/green_MarkerP.png'}),
+        centerIcon = new LeafIcon({iconUrl: 'static/Google_Maps_Markers/blue_MarkerC.png'});
+    var iconDict = {
+        'hn': nationalIcon,
+        'hr': regionalIcon,
+        'hp': prefectureIcon
+    };
+
+
+    var facility_type = ndx.dimension(function (d) {
+        if (typeof d.affiliation == "undefined") return "";
+        return d.affiliation;
+    }, false);
+    var facility_typeGroup = (facility_type.group().reduceSum(function (d) {
+        return 1;
+    }));
+    console.log(facility_typeGroup.all())
+
+
+    var facility = ndx.dimension(function (d) {
+        if (typeof d.name_of_laboratory == "undefined") return "";
+        if (d.latitude == "") return [d.name_of_laboratory, "0,0", d.affiliation];
+        return [d.name_of_laboratory, "" + d.latitude + "," + d.longitude, d.affiliation]
+    }, false);
+    var facilityGroup = facility.group().reduceSum(function (d) {
+        return 1;
+    });
+
+    facilityGroup.all().forEach(function (d, i) {
+
+        d.inst = d.key[0];
+        d.geo = d.key[1];
+        d.type = d.key[2];
+        d.key = d.key[1];
+        if (Object.keys(iconDict).indexOf(d.type) != -1) {
+            d.icon = iconDict[d.type]
+        }
+        else {
+            d.icon = centerIcon
+        }
+
+        return d;
+    });
+
+    var nationalGroup = facilityGroup.all().filter(function (d, i) {
+        return d.type == 'hn'
+    });
+    console.log('national', nationalGroup);
+
+    /*var marker = dc_leaflet.markerChart(" .mapping")
+                        .dimension(facility)
+                        .group(facilityGroup)
+                        .width($('div.mapping').width())
+                        .height(700)
+                        .center([10.2, -11.5])
+                        .zoom(7)
+                        .cluster(false)
+                        .title(function (d) {
+                            return toTitleCase(d.inst);
+                        })
+            .icon(function(d){if (Object.keys(iconDict).indexOf(d.type)!=-1){return iconDict[d.type]}
+            else{return centerIcon}});
+*/
+
+
+
+    var center_prefecture_startmarker = [];
+    var center_regional_startmarker = [];
+    var prefecture_regional_startmarker = [];
+    var regional_national_startmarker = [];
+
+
+    facilityGroup.all().forEach(function (d) {
+        if (d.type == 'hn') {
+            national_layers[d.inst] =
+                L.marker([parseFloat(d.geo.split(',')[0]), parseFloat(d.geo.split(',')[1])],
+                    {
+                        icon: d.icon,
+                        inst: d.inst
+                    })
+        }
+        if (d.type == 'hr') {
+            regional_layers[d.inst] =
+                L.marker([parseFloat(d.geo.split(',')[0]), parseFloat(d.geo.split(',')[1])],
+                    {
+                        icon: d.icon,
+                        inst: d.inst
+                    })
+        }
+        if (d.type == 'hp') {
+            prefecture_layers[d.inst] =
+                L.marker([parseFloat(d.geo.split(',')[0]), parseFloat(d.geo.split(',')[1])],
+                    {
+                        icon: d.icon,
+                        inst: d.inst
+                    })
+        }
+        if (['hn', 'hr', 'hp'].indexOf(d.type) == -1) {
+            center_layers[d.inst] =
+                L.marker([parseFloat(d.geo.split(',')[0]), parseFloat(d.geo.split(',')[1])],
+                    {
+                        icon: d.icon,
+                        inst: d.inst
+                    })
+        }
+
+        facility_layers[d.inst] =
+            L.marker([parseFloat(d.geo.split(',')[0]), parseFloat(d.geo.split(',')[1])],
+                {
+                    icon: d.icon,
+                    inst: d.inst
+                })
+    });
+
+    var polyline_group_types = [
+        center_prefecture,
+        center_regional,
+        prefecture_regional,
+        regional_national
+    ]
+
+    var polyline_group_dict = [
+        center_prefecture_dict,
+        center_regional_dict,
+        prefecture_regional_dict,
+        regional_national_dict
+    ]
+
+    polyline_group_dict.forEach(function(q){
+        q.forEach(function(d){
+            d['polyline'].addTo(map)
+            });
+        });
+
+    leaflet_group_layers.forEach(function(layers,marker) {
+        for (var inst in layers) {
+            leaflet_group_markers[marker].addLayer(layers[inst]);
+            layers[inst].bindPopup('<strong>'+toTitleCase(inst)+'</strong>')
+            .on('mouseover', function (e) {
+                console.log(e.target.options);
+            this.openPopup();
+            polyline_group_dict.forEach(function(q){
+                q.forEach(function(d){
+                d['polyline'].setStyle({opacity:'.05'})
+            });
+            });
+            var popup_inst = data.filter(function(d){return d.name_of_laboratory == e.target.options.inst});
+            var first_end = [];
+            var popup_links = links.filter(function(d){if (d.start == e.target.options.inst){first_end.push([d.start,d.end])}return d.start == e.target.options.inst})
+            var second_end = [];
+            first_end.forEach(function(end){
+                links.filter(function(d){if (d.start == end[1]){if (second_end.indexOf(d.end)==-1){second_end.push([d.start,d.end])}return d.start == end[1]}});
+            })
+
+
+            var first_leg =[];
+            var second_leg =[];
+
+            polyline_group_types.forEach(function(p,i){
+                p.filter(function(d) {
+                    first_end.forEach(function (q) {
+                        if (q[0] == d.start & q[1] == d.end) {
+                            first_leg.push(d.index)
+                        }
+                    })
+                    second_end.forEach(function (q) {
+                        if (q[0] == d.start & q[1] == d.end) {
+                            second_leg.push(d.index)
+                        }
+                    })
+                })
+            });
+            //console.log( first_leg)
+            //console.log( second_leg)
+
+            polyline_group_dict.forEach(function(q){
+                    q.forEach(function(d,i){
+                        if (first_leg.indexOf(i.toString() || second_leg.indexOf(i.toString()))!=-1){
+                        d['polyline'].setStyle({opacity:'1',weight:7})}
+                        });
+                    });
+            })
+            .on('mouseout', function (e) {
+            this.closePopup();
+            polyline_group_dict.forEach(function(q){
+                q.forEach(function(d){
+                d['polyline'].setStyle({opacity:'1',weight:3})
+            });
+            });
+        });
+
+        }
+        map.addLayer(leaflet_group_markers[marker]);
+    });
+
+
+    /*
+   // var polyline = L.polyline(L.PolylineUtil.decode(center_regional[0]['polyline'], 5), {color: 'red'}).addTo(map);
+    center_prefecture.forEach(function(d){
+        L.polyline(L.PolylineUtil.decode(d['polyline'], 5), {color: 'blue'}).addTo(map)
+    })
+    center_regional.forEach(function(d){
+        L.polyline(L.PolylineUtil.decode(d['polyline'], 5), {color: 'lightblue'}).addTo(map)
+    })
+    prefecture_regional.forEach(function(d){
+        L.polyline(L.PolylineUtil.decode(d['polyline'], 5), {color: 'green'}).addTo(map)
+    })
+    regional_national.forEach(function(d){
+        L.polyline(L.PolylineUtil.decode(d['polyline'], 5), {color: 'purple'}).addTo(map)
+    })
+*/
+
+    ///MAP LISTENERS////////////////////////////////////////////////////
+    listener_list = [
+        bar_training,
+        bar_region,
+        bar_prefecture,
+        bar_public_private,
+        bar_affiliation,
+        bar_staff,
+        bar_patients
+
+    ];
+    listener_list.forEach(function(l){
+        l.on("filtered", function (d) {
+        facilityGroup.all().forEach(function (d) {
+            if (d.value != 0) {
+                if (Object.keys(national_layers).indexOf(d.inst) != -1) {
+                    if (map.hasLayer(national_layers[d.inst]) == false) {
+                        natl_markers.addLayer(national_layers[d.inst])
+                    }
+                }
+                if (Object.keys(regional_layers).indexOf(d.inst) != -1) {
+                    if (map.hasLayer(regional_layers[d.inst]) == false) {
+                        reg_markers.addLayer(regional_layers[d.inst])
+                    }
+                }
+                if (Object.keys(prefecture_layers).indexOf(d.inst) != -1) {
+                    if (map.hasLayer(prefecture_layers[d.inst]) == false) {
+                        pref_markers.addLayer(prefecture_layers[d.inst])
+                    }
+                }
+                if (Object.keys(center_layers).indexOf(d.inst) != -1) {
+                    if (map.hasLayer(center_layers[d.inst]) == false) {
+                        cent_markers.addLayer(center_layers[d.inst])
+                    }
+                }
+            }
+            if (d.value == 0) {
+                if (Object.keys(national_layers).indexOf(d.inst) != -1) {
+                    natl_markers.removeLayer(national_layers[d.inst])
+                }
+                if (Object.keys(regional_layers).indexOf(d.inst) != -1) {
+                    reg_markers.removeLayer(regional_layers[d.inst])
+                }
+                if (Object.keys(prefecture_layers).indexOf(d.inst) != -1) {
+                    pref_markers.removeLayer(prefecture_layers[d.inst])
+                }
+                if (Object.keys(center_layers).indexOf(d.inst) != -1) {
+                    cent_markers.removeLayer(center_layers[d.inst])
+                }
+            }
+        })
+    });
+    });
+
+
+    function facility_card(d){
+            var card_text = "";
+            var div_row_start ='<div class="row">';
+            var div_row_end = '</div>';
+            var div_L_start ='<div class="col-md-7">';
+            var div_L_end = '</div>';
+            var div_R_start ='<div class="col-md-5">';
+            var div_R_end = '</div>';
+
+            var title = '<h2 style="font-size:14px;min-height:20px;">'+toTitleCase(d.name_of_laboratory)+'</h2>';
+            var subtitle = '<h2 style="font-size:12px;min-height:10px;margin-top:-5px;margin-bottom:5px">'+toTitleCase(d.prefecture)+', '+toTitleCase(d.region)+'</h2>';
+            var inst_head = '<h2 style="font-size:12px;min-height:10px;margin-top:5px;margin-bottom:5px">Inst. Head: '+toTitleCase(d.institute_head)+'</h2>';
+            var lab_head = '<h2 style="font-size:12px;min-height:10px;margin-top:5px;margin-bottom:15px">Lab Head: '+toTitleCase(d.lab_head)+'</h2>';
+
+            function latlng(d){if(d.latitude){return '('+d.latitude.slice(0,7)+', '+d.longitude.slice(0,7)+')' }return ""}
+            var location = '<h2 style="font-size:14px;text-align:left">Facility</h2>' +
+                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:60px;">' +
+                '<b>Aff</b>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+d.affiliation.toUpperCase()+'<br>' +
+                '<b>Type</b>:&nbsp;&nbsp;'+toTitleCase(d.public_private)+'<br>' +
+                '<b>Loc</b>:&emsp;'+latlng(d)+'<br>' +
+                '<b>Staff</b>:&emsp;'+d.total_staff+'<br>' +
+                '<b>Patients/day</b>:&emsp;'+d.patients_per_day+'<br>' +
+                '</p>';
+
+            var amenities = '<h2 style="font-size:14px;text-align:left">Features</h2>' +
+                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:60px;">';
+            var amenity_list=['phone','fax','computer','internet','electricity'];
+            amenity_list.forEach(function(a){if (d[a]==1){amenities+=toTitleCase(a)+'<br>'}});
+            amenities +='</p>';
+
+            var rapid_tests = '<h2 style="font-size:14px;text-align:left">Rapid Tests</h2>' +
+                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:50px;">';
+            var test_list=['tdf_palu','tdr_hiv','widal','hb_sahli'];
+            test_list.forEach(function(a){if (d[a]==1){rapid_tests+=toTitleCase(a.replace("_"," "))+'<br>'}});
+            rapid_tests +='</p>';
+
+            var all_tests = '<h2 style="font-size:14px;text-align:left">List of Exams</h2>' +
+                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:50px;">'+d.list_of_all_exams+'</p>';
+
+
+            var training_needs = '<h2 style="font-size:14px;text-align:left">Training Needs</h2>' +
+                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:50px;">';
+            if (d.training){
+                d.training.forEach(function(a){if (a!='nan'){training_needs+=toTitleCase(a)+'<br>'}});
+            }
+            training_needs +='</p>';
+
+            card_text = div_row_start+title+subtitle+inst_head+lab_head+
+                div_L_start+location+training_needs+div_L_end+div_R_start+ amenities+rapid_tests+div_R_end+ div_row_end+
+                div_row_start+all_tests+div_row_end;
+            return card_text
+        }
+
+        var facilities = dc.dataGrid(".dc-data-grid")
+            .dimension(facility)
+            .group(function(d){return toTitleCase(d.region)})
+            .size(250)
+            .html (facility_card)
+            .sortBy(function (d) {
+                return d.region;
+                })
+            .order(d3.ascending)
+
+
+
+
+
+    //--------- EXPORT -------------
+
+        function replaceAll(str, find, replace) {
+            return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+        }
+        function escapeRegExp(str) {
+            return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+        }
+        function exportToCsv() {
+           var filename = 'dissertation_export.csv';
+           var rows = training.top(Infinity);
+           var fields = [];
+           /*rows.sort(function(a,b){
+                  if (a.CC===b.CC){
+                     return (b.D-a.D);
+                  } else if(a.CC>b.CC){
+                     return 1;
+                  } else if(a.CC<b.CC){
+                     return -1;
+                  }
+               });*/
+
+            var discard_fields = [
+                'file_name_ssim',
+                'final_submission_file_isim',
+                'id',
+                'released_metadata_at_dtsi',
+                'score',
+                'title_tesi',
+                'db_id',
+                'download_access_group_ssim',
+                'last_name_tesi',
+                'degree_type_slug_ssi',
+                'program_name_tesi',
+                'committee_member_name_ssim',
+                'committee_member_name_tesim',
+                'committee_member_and_role_tesim',
+                'keyword_tesim',
+                'committee_member_email_ssim'
+                ];
+
+
+            Object.keys(rows[0]).forEach(function(d){if (discard_fields.indexOf(d) == -1){fields.push(d)}})
+/*
+            fields.splice(0, 0, fields.splice(fields.indexOf("Ti"), 1)[0])
+            fields.splice(0, 0, fields.splice(fields.indexOf("AfN"), 1)[0])
+            fields.splice(0, 0, fields.splice(fields.indexOf("AuN"), 1)[0])
+            fields.splice(0, 0, fields.splice(fields.indexOf('D'), 1)[0])
+            fields.splice(0, 0, fields.splice(fields.indexOf('CC'), 1)[0])
+*/
+            var replacer = function(key, value) { return value === 'nan' ? '' : value };
+            var csv ="";
+           csv+=fields.join(',')+'\r\n';
+           rows.forEach(function(d){
+                var row = [];
+                fields.forEach(function(e) {
+                        if (typeof d[e] == "undefined") {row.push("")
+                        }
+                        else {
+                            var row_data = JSON.stringify(d[e], replacer);
+                            row_data = replaceAll(row_data, '[', '');
+                            row_data = replaceAll(row_data, ']', '');
+                            row_data = replaceAll(row_data, '"', '');
+                            row_data = '"' + row_data + '"';
+                            row.push(row_data)
+                        }
+                });
+                csv+=row.join(',')+'\r\n';
+            });
+
+            var hiddenElement = document.createElement('a');
+                hiddenElement.href = 'data:text/csv;charset=utf-8,' + csv;
+                hiddenElement.target = '_blank';
+                hiddenElement.download = filename;
+                hiddenElement.click();
+        }
+
+
+            d3.select('button.download_table').on('click',exportToCsv)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    dc.dataCount(".dc-data-count")
+        .dimension(ndx)
+        .group(all)
+
+    dc.renderAll();
+
+});
+        }
+    </script>
+
+
+
+<header class="audience d-flex">
+      <div class="container text-center my-auto landing">
+          <div class="mb-1 " style="text-align:left; padding-top:25px;padding-bottom:5px;">
+                        <h2 class="script">Guinea Healthcare Survey Explorer</h2>
+                        <h4 class="script">Explore the key metrics that inform on resource allocation and sample diagnosis within the Guinea healthcare system.</h4>
+
+                        <p>Over 100 medical facilities in Guinea were surveyed in 2016.
+                             Included are select features relating to sample transport and rapid diagnosis.
+                        </p>
+
+              <p><span class="reset_"></span></p>
+
+        </div>
+          <div class="cta col-lg-6">
+              <a class="btn btn-primary btn-xl js-scroll-trigger" href="#arl2017list">Explore the Database</a>
+          </div>
+          <div class="cta col-lg-6">
+              <p style="text-align:right;">Developed by Dr. Robbie Fraleigh<br><i>Updated 07/09/2018</i></p>
+          </div>
+
+
+
+
+      </div>
+      <div class="overlay"></div>
+    </header>
+    <div id="arl2017list">
+        <div class="container-fluid"  style="padding-left:25px;padding-right:25px;padding-top:0px;background:#c9d3de">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="col-md-12 dc-data-count panel"  style="clear:both">
+                            <h3>Reporting on <span class="total-count"></span> Medical Facilities</h3>
+                            <p>This chart is <b>interactive</b>. Downselect a custom query by clicking on elements within each chart.
+                            <span class="filter-count"></span> facilities selected | <a
+                                    href="javascript:dc.filterAll();dc.renderAll();">Reset All</a></p>
+                        <p>The point-of-care map shows each surveyed healthcare facility. The colored Google routes estimate biological sample or patient transport routes between facilities.</p>
+                        <p><b>Mouseover</b> a location to see the route a sample or patient would take to seek a diagnosis.</p>
+                            <h3 style="padding-top:15px;">Transport Legend</h3>
+                        <img src="static/site/img/transport_legend_titled3.png" style="width:90%; position:relative; top:34%; left:5%;z-index: 1">
+                        </div>
+                    <div class="col-lg-12 panel">
+
+                        <div class="col-md-12">
+                            <div class="col-lg-12 " style="padding-top:25px;">
+                                <h5>Facility Amenities</h5>
+                                <form>
+                                    <label class="checkbox-inline">
+                                      <input id="phone" type="checkbox" value="Phone" class="checkbox"> Phone&nbsp;&nbsp;
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input id="fax" type="checkbox" value="Fax" class="checkbox"> Fax&nbsp;&nbsp;
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input id="computer" type="checkbox" value="Computer" class="checkbox"> Computer&nbsp;&nbsp;
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input id="internet" type="checkbox" value="Internet" class="checkbox"> Internet&nbsp;&nbsp;
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input id="electricity_existence" type="checkbox" value="Electricity" class="checkbox"> Electricity&nbsp;&nbsp;
+                                    </label>
+                                  </form>
+                            </div>
+                            <div class="col-lg-12">
+                                <h5>Rapid Testing</h5>
+                                <form >
+                                    <label class="checkbox-inline">
+                                      <input id="tdr_palu" type="checkbox" value="TDR_Palu" class="checkbox">TDR Palu&nbsp;&nbsp;
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input id="tdr_hiv" type="checkbox" value="TDR_HIV" class="checkbox">TDR HIV&nbsp;&nbsp;
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input id="widal" type="checkbox" value="Widal" class="checkbox">Widal&nbsp;&nbsp;
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input id="hb_sahli" type="checkbox" value="Hb_Sahli" class="checkbox">HB Sahli&nbsp;&nbsp;
+                                    </label>
+                                  </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 panel" style="padding-top:25px;">
+                            <div class="col-md-6">
+                                    <h4>Total Staff</h4>
+                                    <p class="reset_chart"><span class="staff_reset">Reset Chart</span></p>
+                                    <div class="col-lg-12 staff" style="height:150px"></div>
+                            </div>
+                            <div class=" col-md-6">
+                                    <h4>Patients Per Day</h4>
+                                    <p class="reset_chart"><span class="patient_reset">Reset Chart</span></p>
+                                    <div class="col-lg-12 patients" style="height:150px;"></div>
+                            </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-md-8">
+                    <div class="col-md-12 panel" style="margin-top:15px;">
+                        <div class="col-md-6">
+                            <h3 style="padding-bottom:15px;">Facility Classification</h3>
+                            <div class="col-md-6">
+                                <h5>Affiliation</h5>
+                                <p class="reset_chart"><span class="affiliation_reset">Reset </span>|
+                                Sort by <span class="reset affiliation_value" style="color:blue">Count</span>
+                                or by <span class="reset affiliation_name" style="color:blue">Name</span></p>
+                                <div class="affiliation col-lg-12" style="margin-left:-25px;height:225px;overflow: auto"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Sector</h5>
+                                <p class="reset_chart"><span class="sector_reset">Reset </span>|
+                                Sort by <span class="reset sector_value" style="color:blue">Count</span>
+                                or by <span class="reset sector_name" style="color:blue">Name</span></p>
+                                <div class="public_private col-lg-12"  style="margin-left:-25px;height:225px;overflow: auto"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 style="padding-bottom:15px;">Administrative District</h3>
+
+                            <div class="col-md-6">
+                                <h5>Regions</h5>
+                                <p class="reset_chart"><span class="region_reset">Reset </span>|
+                                Sort by <span class="reset region_value" style="color:blue">Count</span>
+                                or by <span class="reset region_name" style="color:blue">Name</span></p>
+                                <div class="region col-lg-12" style="margin-left:-25px;height:225px;overflow: auto"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Prefecture</h5>
+                                <p class="reset_chart"><span class="prefecture_reset">Reset </span>|
+                                Sort by <span class="reset prefecture_value" style="color:blue">Count</span>
+                                or by <span class="reset prefecture_name" style="color:blue">Name</span></p>
+                                <div class="prefecture col-lg-12"  style="margin-left:-25px;height:225px;overflow: auto"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 panel" style="margin-top:15px;">
+                        <div class="col-md-9" >
+                            <h3 style="padding-bottom:25px;">Point of Care Network Graph | <a class="btn btn-primary btn-xl js-scroll-trigger" href="#facility-report">See The Survey Data</a></h3>
+                            <div class="col-md-12" id="map"></div>
+                        </div>
+                        <div class="col-lg-3" style="padding-top:15px">
+                            <h4>Training Needs</h4>
+                            <p class="reset_chart"><span class="training_reset">Reset </span>|
+                            Sort by <span class="reset training_value" style="color:blue">Count</span>
+                            or by <span class="reset training_name" style="color:blue">Name</span></p>
+                            <div class="col-md-12 training" style="margin-left:-25px;height:475px;overflow: auto"></div>
+                        </div>
+                    </div>
+
+                    <!--<div class="col-md-12 map" id="map" style="height:500px;width:500px;"></div>-->
+                </div>
+            </div>
+
+        </div>
+        <div class="container-fluid" id="facility-report">
+            <div class="row" >
+                <h4 style="padding-bottom:15px;">Facility Report | <button  class="btn-sm btn-primary download_table" type="submit">Download Selection</button></h4>
+                <div class="dc-data-grid col-lg-12" style="overflow: auto;height:600px;" id="right1a" >
+
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $(function() {
+                d3.csv("data_randomized/guinea_healthcare_table_cleaned.csv", function(d) {return d;}
+          ,function(error, rows) {
+          grid ("#arl2017list",rows);
+          });
+        });
+    </script>
+        <!--<script src="data/dcjs_example/jquery_1.11.min.js"></script>
+        <script src="data/bootstrap/js/bootstrap.min.js"></script>-->
+
+        <script src="static/dcjs_example/jquery_1.11.min.js"></script>
+        <script src="static/bootstrap_4.0/js/bootstrap.min.js"></script>
+        <script src="static/dcjs_example/jquery.lazyload.js"></script>
+
+<!-- Plugin JavaScript -->
+    <script src="static/site/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="static/site/js/stylish-portfolio.js"></script>
+</body>
+</html>
