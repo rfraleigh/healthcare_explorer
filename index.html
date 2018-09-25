@@ -202,44 +202,30 @@
 
 </head>
 <body>
-    <!--<link href="data/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <script type="text/javascript" src="data/dcjs/d3_3_5_17.js"></script>
-    <script type="text/javascript" src="data/dcjs/crossfilter2_1.4.0-alpha.6.js"></script>
-    <script type="text/javascript" src="data/dcjs_example/dc.js"></script>
-    <script type="text/javascript" src="data/dcjs_example/data-grid.js"></script>
-    <script type="text/javascript" src="data/dcjs_example/underscore-min.js"></script>
-
-    <script src="data/dcjs_example/jquery.min.js"></script>
-    <script src="data/dcjs_example/jquery.lazyload.js"></script>-->
-    <script src="static/dcjs_example/jquery_1.11.min.js"></script>
-
     <script type="text/javascript" src="static/dc.js_2.1.10/web/js/d3.js"></script>
     <script type="text/javascript" src="static/dc.js_2.1.10/web/js/crossfilter.js"></script>
     <script type="text/javascript" src="static/dc.js_2.1.10/web/js/dc.js"></script>
-    <script type="text/javascript" src= "static/dc.js_2.1.10/src/data-grid.js"></script>
+    <script type="text/javascript" src="static/dc.js_2.1.10/src/data-grid.js"></script>
     <script type="text/javascript" src="static/dcjs_example/underscore-min.js"></script>
 
     <script type="text/javascript" src="static/dc_leaflet/web/js/leaflet.js"></script>
-    <script type="text/javascript" src="static/dc_leaflet/web/js/polyline.encoded.js"></script>
-
-    <script type="text/javascript" src= "static/dc_leaflet/web/js/colorbrewer.js"></script>
+    <script src="static/dc_leaflet/web/js/colorbrewer.js"></script>
     <script type="text/javascript" src="static/dc_leaflet/web/js/leaflet.markercluster.js"></script>
     <script type="text/javascript" src="static/dc_leaflet/web/js/dc.leaflet.js"></script>
+    <script type="text/javascript" src="static/dc.js_2.1.10/web/js/d3-queue.v3.min.js"></script>
+    <script type="text/javascript" src="static/dc_leaflet/web/js/polyline.encoded.js"></script>
 
+    <script src="static/dcjs_example/jquery.min.js"></script>
 
-    <!--<script src="leaflet-routing-machine-3.2.7/leaflet-routing-machine-3.2.7/dist/leaflet-routing-machine.js"></script>
-    <link rel="stylesheet" href="leaflet-routing-machine-3.2.7/leaflet-routing-machine-3.2.7/dist/leaflet-routing-machine.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />-->
+    <!--<script src="../static/dashboard/js/dashboard-functions.js"></script>
+    <script src="../static/dashboard/js/dashboard-charts.js"></script>-->
 
-
-    <link type="text/css" href= "static/dc.js_2.1.10/web/css/dc.css" rel="stylesheet"/>
-    <link type="text/css" href= "static/bootstrap_4.0/css/bootstrap_4.0.0-alpha.3.css" rel="stylesheet">
-
-    <link type="text/css" href= "static/dc_leaflet/web/css/leaflet.css" rel="stylesheet"/>
-	<link type="text/css" href= "static/dc_leaflet/web/css/MarkerCluster.Default.css" rel="stylesheet"/>
-	<link type="text/css" href= "static/dc_leaflet/web/css/MarkerCluster.css" rel="stylesheet"/>
-	<link type="text/css" href= "static/dc_leaflet/web/css/leaflet-legend.css" rel="stylesheet"/>
+	<link type="text/css" href="static/dc.js_2.1.10/web/css/dc.css" rel="stylesheet"/>
+    <link type="text/css" href="static/bootstrap_4.0/css/bootstrap_4.0.0-alpha.3.css" rel="stylesheet">
+    <link type="text/css" href="static/dc_leaflet/web/css/leaflet.css" rel="stylesheet"/>
+	<link type="text/css" href="static/dc_leaflet/web/css/MarkerCluster.Default.css" rel="stylesheet"/>
+	<link type="text/css" href="static/dc_leaflet/web/css/MarkerCluster.css" rel="stylesheet"/>
+	<link type="text/css" href="static/dc_leaflet/web/css/leaflet-legend.css" rel="stylesheet"/>
 
     <script>
 
@@ -570,7 +556,7 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
         var region_dict = [];
 
         //----------------------------------------
-          data.forEach(function(d,i){if (typeof d.training !="undefined") d.training = d.training.split(',');} )
+          data.forEach(function(d,i){if (typeof d.training !="undefined") d.training = d.training.split(';');} )
           var bar_training =dc.rowChart(selector + " .training");
 
           var training = ndx.dimension(function(d) {
@@ -1436,7 +1422,7 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
             return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
         }
         function exportToCsv() {
-           var filename = 'dissertation_export.csv';
+           var filename = 'data_export.csv';
            var rows = training.top(Infinity);
            var fields = [];
            /*rows.sort(function(a,b){
