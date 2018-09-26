@@ -216,7 +216,10 @@
     <script type="text/javascript" src="static/dc_leaflet/web/js/polyline.encoded.js"></script>
 
     <script src="static/dcjs_example/jquery.min.js"></script>
+    <script src="static/dcjs_example/jquery_1.11.min.js"></script>
 
+    <script src="static/dc_leaflet_heat/dist/leaflet-heat.js"></script>
+    <script src="static/dc_leaflet_heat/src/HeatLayer.js"></script>
     <!--<script src="../static/dashboard/js/dashboard-functions.js"></script>
     <script src="../static/dashboard/js/dashboard-charts.js"></script>-->
 
@@ -229,7 +232,8 @@
 
     <script>
 
-        function grid (selector,data) {
+        function grid (selector,data,overlays) {
+            console.log(overlays)
           var ndx = crossfilter(data),
               all = ndx.groupAll();
 
@@ -412,6 +416,7 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
 
     var markers = L.markerClusterGroup();
     var natl_markers = L.markerClusterGroup(
@@ -1499,6 +1504,29 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
 
 
 
+    var heat = L.heatLayer(overlays['distance_access'],{max:24, radius:20}   ).addTo(map);
+
+    var heat_options = {
+        'distance_access':[24,20],
+        'distance_access_hb':[500,20],
+        'distance_access_hiv':[500,20],
+        'distance_access_palu':[500,20],
+        'distance_access_widal':[500,20],
+        'walking_outside_20km':[.3,20],
+        'walking_outside_20km_hb':[.3,20],
+        'walking_outside_20km_hiv':[.3,20],
+        'walking_outside_20km_palu':[.3,20],
+        'walking_outside_20km_widal':[.3,20]
+    };
+
+    var overlay_map_value = d3.select('select.custom-select#overlay_map').on('change',function(){
+        var sect = document.getElementById("overlay_map");
+        var section = sect.options[sect.selectedIndex].value;
+        heat.removeFrom(map)
+        heat = L.heatLayer(overlays[section],{max:heat_options[section][0], radius:heat_options[section][1]}   ).addTo(map);
+        console.log(section)
+    })
+
 
 
 
@@ -1662,7 +1690,26 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
                     </div>
                     <div class="col-md-12 panel" style="margin-top:15px;">
                         <div class="col-md-9" >
-                            <h3 style="padding-bottom:25px;">Point of Care Network Graph | <a class="btn btn-primary btn-xl js-scroll-trigger" href="#facility-report">See The Survey Data</a></h3>
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <h3 class='poc_graph'>Facility Network | <a class="btn btn-primary btn-xl js-scroll-trigger" href="#facility-report">See The Survey Data</a></h3>
+                                </div>
+                                    <div class="col-lg-5">
+                                    <select class="custom-select d-block w-100" id="overlay_map" required="" style="display: inline-block;">
+                                      <option value="">Choose Inaccessibility Overlay...</option>
+                                      <option value="distance_access">Dist Access</option>
+                                      <option value="distance_access_hb">Dist Access HB Sahli</option>
+                                      <option value="distance_access_hiv">Dist Access HIV</option>
+                                      <option value="distance_access_palu">Dist Access Palu</option>
+                                      <option value="distance_access_widal">Dist Access Widal</option>
+                                      <option value="walking_outside_20km">Walking Access 20Km</option>
+                                      <option value="walking_outside_20km_hb">Walking Access 20Km HB Sahli</option>
+                                      <option value="walking_outside_20km_hiv">Walking Access 20Km HIV</option>
+                                      <option value="walking_outside_20km_palu">Walking Access 20Km Palu</option>
+                                      <option value="walking_outside_20km_widal">Walking Access 20Km Widal</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-12" id="map"></div>
                         </div>
                         <div class="col-lg-3" style="padding-top:15px">
@@ -1691,17 +1738,38 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
 
     <script>
     $(function() {
+        var lookup = 'data_randomized/inaccessibility/file-lookup.json';
+        var folder = 'data_randomized/inaccessibility/'
+
+        var inaccessibility_files = d3.queue();
+
+        d3.json(lookup,function(file_lookup){
+            file_lookup['files'].forEach(function(file,ind){
+                if (ind>-1) {
+                    inaccessibility_files.defer(d3.json, folder + file)
+                }
+            });
+            inaccessibility_files.awaitAll(function(file_error, files){
+                if (file_error) throw file_error;
+                var overlay = {};
+                files.forEach(function(file,i){
+                    overlay[file_lookup['files'][i].replace('.json','')]=file
+                })
                 d3.csv("data_randomized/guinea_healthcare_table_cleaned.csv", function(d) {return d;}
           ,function(error, rows) {
-          grid ("#arl2017list",rows);
+          grid ("#arl2017list",rows,overlay);
           });
         });
+         })
+        })
     </script>
         <!--<script src="data/dcjs_example/jquery_1.11.min.js"></script>
         <script src="data/bootstrap/js/bootstrap.min.js"></script>-->
 
         <script src="static/dcjs_example/jquery_1.11.min.js"></script>
         <script src="static/bootstrap_4.0/js/bootstrap.min.js"></script>
+            <script src="static/bootstrap_4.0/js/bootstrap.bundle.js"></script>
+
         <script src="static/dcjs_example/jquery.lazyload.js"></script>
 
 <!-- Plugin JavaScript -->
