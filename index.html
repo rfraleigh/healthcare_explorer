@@ -803,7 +803,20 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
             .x(d3.scale.ordinal())
             .labelOffsetX(5)
             .label(function (d) {
-                        return '(' + d.value + ')  ' + toTitleCase(d.key)
+                    var text = '(' + d.value + ')  ' + toTitleCase(d.key)
+                if (d.key.toLowerCase()=='hn'){
+                        text = '(' + d.value + ')  ' + toTitleCase('National Facility')
+                }
+                if (d.key.toLowerCase()=='hp'){
+                        text = '(' + d.value + ')  ' + toTitleCase('Prefecture Facility')
+                }
+                if (d.key.toLowerCase()=='hr'){
+                        text = '(' + d.value + ')  ' + toTitleCase('Regional Facility')
+                }
+                if (['hn','hr','hp'].indexOf(d.key.toLowerCase())==-1){
+                        text = '(' + d.value + ')  ' + 'Center Facility - '+d.key.toUpperCase()
+                }
+                        return text
                     })
             .ordering(function(kv) { return -kv.value; })
             .elasticX(true)
@@ -1585,8 +1598,8 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
                             <p>This chart is <b>interactive</b>. Downselect a custom query by clicking on elements within each chart.
                             <span class="filter-count"></span> facilities selected | <a
                                     href="javascript:dc.filterAll();dc.renderAll();">Reset All</a></p>
-                        <p>The point-of-care map shows each surveyed healthcare facility. The colored Google routes estimate biological sample or patient transport routes between facilities.</p>
-                        <p><b>Mouseover</b> a location to see the route a sample or patient would take to seek a diagnosis.</p>
+                        <p>The facility network shows each surveyed healthcare facility. The colored Google routes estimate biological sample or patient transport routes between facilities.</p>
+                        <p><b>Mouseover</b> a facility location to see the route a sample or patient would take to seek a diagnosis.</p>
                             <h3 style="padding-top:15px;">Transport Legend</h3>
                         <img src="static/site/img/transport_legend_titled3.png" style="width:90%; position:relative; top:34%; left:5%;z-index: 1">
                         </div>
