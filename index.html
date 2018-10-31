@@ -1517,14 +1517,18 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
 
 
 
-    var heat = L.heatLayer(overlays['distance_access'],{max:24, radius:20}   ).addTo(map);
+    var heat = L.heatLayer(overlays['distance_access_hb'],{max:24, radius:20}   ).addTo(map);
 
     var heat_options = {
-        'distance_access':[24,20],
-        'distance_access_hb':[500,20],
-        'distance_access_hiv':[500,20],
-        'distance_access_palu':[500,20],
-        'distance_access_widal':[500,20],
+        'distance_access':[500,20],
+        'distance_access_hb':[24,20],
+        'distance_access_hiv':[24,20],
+        'distance_access_palu':[24,20],
+        'distance_access_widal':[24,20],
+        'distance_pop_access_hb':[500,20],
+        'distance_pop_access_hiv':[500,20],
+        'distance_pop_access_palu':[500,20],
+        'distance_pop_access_widal':[500,20],
         'walking_outside_20km':[.3,20],
         'walking_outside_20km_hb':[.3,20],
         'walking_outside_20km_hiv':[.3,20],
@@ -1590,7 +1594,6 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
     </header>
     <div id="arl2017list">
         <div class="container-fluid"  style="padding-left:25px;padding-right:25px;padding-top:0px;background:#c9d3de">
-
             <div class="row">
                 <div class="col-md-4">
                     <div class="col-md-12 dc-data-count panel"  style="clear:both">
@@ -1710,16 +1713,23 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
                                     <div class="col-lg-5">
                                     <select class="custom-select d-block w-100" id="overlay_map" required="" style="display: inline-block;">
                                       <option value="">Choose Inaccessibility Overlay...</option>
-                                      <option value="distance_access" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access</option>
+                                      <!--<option value="distance_access" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access</option>-->
                                       <option value="distance_access_hb" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access HB Sahli</option>
                                       <option value="distance_access_hiv" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access HIV</option>
                                       <option value="distance_access_palu" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access Palu</option>
                                       <option value="distance_access_widal" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access Widal</option>
-                                      <!--<option value="walking_outside_20km">Walking Access 20Km</option>
+
+                                      <option value="distance_pop_access_hb" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access HB Sahli</option>
+                                      <option value="distance_pop_access_hiv" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access HIV</option>
+                                      <option value="distance_pop_access_palu" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access Palu</option>
+                                      <option value="distance_pop_access_widal" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access Widal</option>
+
+
+                                      <!--  <option value="walking_outside_20km">Walking Access 20Km</option>-->
                                       <option value="walking_outside_20km_hb">Walking Access 20Km HB Sahli</option>
                                       <option value="walking_outside_20km_hiv">Walking Access 20Km HIV</option>
                                       <option value="walking_outside_20km_palu">Walking Access 20Km Palu</option>
-                                      <option value="walking_outside_20km_widal">Walking Access 20Km Widal</option>-->
+                                      <option value="walking_outside_20km_widal">Walking Access 20Km Widal</option>
                                     </select>
                                 </div>
                             </div>
@@ -1751,8 +1761,8 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
 
     <script>
     $(function() {
-        var lookup = 'data_randomized/inaccessibility/file-lookup.json';
-        var folder = 'data_randomized/inaccessibility/'
+        var lookup = 'data_updated/inaccessibility/file-lookup.json';
+        var folder = 'data_updated/inaccessibility/';
 
         var inaccessibility_files = d3.queue();
 
