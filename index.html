@@ -7,14 +7,29 @@
     <!--<link rel="stylesheet" type="text/css" href="data/dcjs_example/dc.css"/>-->
 
     <style>
+    @import url("static/site/css/material-design-iconic-font/css/material-design-iconic-font.min.css");
 
+
+.card {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  padding:15px;
+  padding-right:25px;
+}
+
+.card:hover {
+  box-shadow: 0 5px 5px rgba(0,0,0,0.15), 0 5px 5px rgba(0,0,0,0.15);
+}
 
         #arl2017list table, .dc-data-grid {clear:both;}
         .dc-table-label {background: #F5F5F5; font-weight:bold; }
         .x line {stroke:none;}
 
         body {font-family: arial, helvetica, sans-serif;}
-
+        p {font-size: .75em;}
+        h5 {font-size: .9em;}
+        h4 {font-size: 1em;}
+        h3 {font-size: 1.2em;}
         .dc-data-grid, .dc-grid-group {clear:both}
         .dc-data-count {clear:both;}
         .dc-grid-group {
@@ -32,7 +47,7 @@
         float:left;
         margin:0 10px 10px 0;
         padding:5px;
-        width:425px;
+        width:375px;
               background-color: #F8F8F8;
               border-color: #E7E7E7;
               border-radius: 4px;
@@ -100,11 +115,11 @@
             font-size:10pt;
         }
 
-        .row {
-        padding-left:25px;
-            padding-right:50px;
-            padding-top:25px;
-        }
+        /*.row {*/
+        /*padding-left:25px;*/
+        /*    padding-right:50px;*/
+        /*    padding-top:25px;*/
+        /*}*/
         .natl_cluster {
             width: 30px;
             height: 30px;
@@ -170,15 +185,15 @@
               #6B98FF
             );
 		}
-        .panel{
-            background:white;
-            box-shadow: 1px 1px lightgray;
-            padding-top:15px;
-            padding-bottom:25px;
-            padding-left:25px;
-            margin-right:5px;
-            margin-bottom:25px;
-        }
+        /*.panel{*/
+        /*    background:white;*/
+        /*    box-shadow: 1px 1px lightgray;*/
+        /*    padding-top:15px;*/
+        /*    padding-bottom:25px;*/
+        /*    padding-left:25px;*/
+        /*    margin-right:5px;*/
+        /*    margin-bottom:25px;*/
+        /*}*/
     .landing {
             background:rgba(255, 255, 255, 0.95);
             padding:25px;
@@ -233,6 +248,32 @@
     <script>
 
         function grid (selector,data,overlays) {
+           function minimize_card(div){
+                d3.select(div).select('.header-icon').append('i').attr('class','zmdi zmdi-window-minimize')
+                var minimize_height = 100;
+                d3.select(div).select('.header-icon i.zmdi').on('click',function(){
+
+                    if (d3.select(div).select('.header-icon i').classed('zmdi-window-minimize')===true){
+                        d3.select(div).select('.header-icon i').classed('zmdi-window-minimize',false)
+                        d3.select(div).select('.header-icon i').classed('zmdi-window-maximize',true)
+
+                        $(div+' .row').toggle();
+                        d3.select(div).style('height',minimize_height+'px')
+                    }
+                    else{
+                        d3.select(div).select('.header-icon i').classed('zmdi-window-minimize',true)
+                        d3.select(div).select('.header-icon i').classed('zmdi-window-maximize',false)
+                        $(div+' .row').toggle();
+                        d3.select(div).style('height','auto')
+
+                    }
+                })
+            }
+
+
+
+
+
             console.log(overlays)
           var ndx = crossfilter(data),
               all = ndx.groupAll();
@@ -410,8 +451,8 @@ d3.csv("data_randomized/edge_repository_for_distribution_withTravel.csv" , funct
 
 
 
-d3.select('#map').style('height', '500px').style('width', $('div#map').width())
-    var map = L.map('map').setView([10.505, -11.09], 7);
+d3.select('#map').style('height', '500px').style('width', $('div#network-card').width()*.95)
+    var map = L.map('map').setView([10.505, -11.09], 6);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -1571,6 +1612,13 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
         .group(all);
 
     dc.renderAll();
+    minimize_card('#facility-class-card')
+    minimize_card('#administrative-card')
+    minimize_card('#staff-card')
+    minimize_card('#amenity-card')
+    minimize_card('#network-card')
+    minimize_card('#training-card')
+
 
 });
         }
@@ -1604,172 +1652,225 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
 
 
       </div>
-    <div class="copyright" style="position:absolute; left:40%; bottom:5%;"><p>Copyright <a style="color:black" href="https://www.psu.edu/copyright-information">@ 2018 The Pennsylvania State University </a></p></div>
-      <div class="overlay"></div>
+        <div class="copyright" style="position:absolute; margin-left: auto;margin-right: auto;left:5%; right:5%; bottom:5%;"><p style="color:black">Copyright <a style="color:black" href="https://www.psu.edu/copyright-information">@ 2018 The Pennsylvania State University </a></p></div>
+        <div class="overlay"></div>
     </header>
     <div id="arl2017list">
-        <div class="container-fluid"  style="padding-left:25px;padding-right:25px;padding-top:0px;background:#c9d3de">
+        <div class="container-fluid"  style="padding-left:25px;padding-right:25px;padding-top:25px;background:#c9d3de">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="col-md-12 dc-data-count panel"  style="clear:both">
-                            <h3>Reporting on <span class="total-count"></span> Medical Facilities</h3>
-                            <p>This chart is <b>interactive</b>. Downselect a custom query by clicking on elements within each chart.
-                            <span class="filter-count"></span> facilities selected | <a
-                                    href="javascript:dc.filterAll();dc.renderAll();">Reset All</a></p>
-                        <p>The facility network shows each surveyed healthcare facility. The colored Google routes estimate biological sample or patient transport routes between facilities.</p>
-                        <p><b>Mouseover</b> a facility location to see possible routes a diagnostic sample or patient would take to seek a diagnosis.</p>
-                            <h3 style="padding-top:15px;">Transport Legend</h3>
-                        <img src="static/site/img/transport_legend_titled3.png" style="width:90%; position:relative; top:34%; left:5%;z-index: 1">
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card" id="description-card">
+                                <div class="header-icon" style="display:inline-block; float:right"></div>
+                                <div class="card-title">
+                                    <h4>Guinea Healthcare Survey Explorer</h4>
+                                </div>
+                                <div class="card-body row">
+                                    <div class="col-md-12 dc-data-count"  style="clear:both">
+                                            <h5>Reporting on <span class="total-count"></span> Medical Facilities</h5>
+                                            <p>This chart is <b>interactive</b>. Downselect a custom query by clicking on elements within each chart.
+                                            <span class="filter-count"></span> facilities selected | <a
+                                                    href="javascript:dc.filterAll();dc.renderAll();">Reset All</a></p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p>The facility network shows each surveyed healthcare facility. The colored Google routes estimate biological sample or patient transport routes between facilities.</p>
+                                        <p><b>Mouseover</b> a facility location to see possible routes a diagnostic sample or patient would take to seek a diagnosis.</p>
+                                            <h5 style="padding-top:15px;">Transport Legend</h5>
+                                        <img src="static/site/img/transport_legend_titled3.png" style="width:90%; position:relative; top:34%; left:5%;z-index: 1">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    <div class="col-lg-12 panel">
+                        <div class="col-md-12">
+                            <div class="card" id="amenity-card">
+                                <div class="header-icon" style="display:inline-block; float:right"></div>
+                                <div class="card-title" >
+                                    <h4>Facility Capabilities</h4>
+                                </div>
+                                <div class="card-body row">
+                                    <div class="col-lg-12 " style="padding-top:25px;">
+                                        <h5>Facility Amenities</h5>
+                                        <form>
+                                            <label class="checkbox-inline">
+                                              <input id="phone" type="checkbox" value="Phone" class="checkbox"> Phone&nbsp;&nbsp;
+                                            </label>
+                                            <label class="checkbox-inline">
+                                              <input id="fax" type="checkbox" value="Fax" class="checkbox"> Fax&nbsp;&nbsp;
+                                            </label>
+                                            <label class="checkbox-inline">
+                                              <input id="computer" type="checkbox" value="Computer" class="checkbox"> Computer&nbsp;&nbsp;
+                                            </label>
+                                            <label class="checkbox-inline">
+                                              <input id="internet" type="checkbox" value="Internet" class="checkbox"> Internet&nbsp;&nbsp;
+                                            </label>
+                                            <label class="checkbox-inline">
+                                              <input id="electricity_existence" type="checkbox" value="Electricity" class="checkbox"> Electricity&nbsp;&nbsp;
+                                            </label>
+                                          </form>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <h5>Rapid Testing</h5>
+                                        <form >
+                                            <label class="checkbox-inline">
+                                              <input id="tdr_palu" type="checkbox" value="TDR_Palu" class="checkbox">TDR Palu&nbsp;&nbsp;
+                                            </label>
+                                            <label class="checkbox-inline">
+                                              <input id="tdr_hiv" type="checkbox" value="TDR_HIV" class="checkbox">TDR HIV&nbsp;&nbsp;
+                                            </label>
+                                            <label class="checkbox-inline">
+                                              <input id="widal" type="checkbox" value="Widal" class="checkbox">Widal&nbsp;&nbsp;
+                                            </label>
+                                            <label class="checkbox-inline">
+                                              <input id="hb_sahli" type="checkbox" value="Hb_Sahli" class="checkbox">HB Sahli&nbsp;&nbsp;
+                                            </label>
+                                          </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="col-md-12">
-                            <div class="col-lg-12 " style="padding-top:25px;">
-                                <h5>Facility Amenities</h5>
-                                <form>
-                                    <label class="checkbox-inline">
-                                      <input id="phone" type="checkbox" value="Phone" class="checkbox"> Phone&nbsp;&nbsp;
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input id="fax" type="checkbox" value="Fax" class="checkbox"> Fax&nbsp;&nbsp;
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input id="computer" type="checkbox" value="Computer" class="checkbox"> Computer&nbsp;&nbsp;
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input id="internet" type="checkbox" value="Internet" class="checkbox"> Internet&nbsp;&nbsp;
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input id="electricity_existence" type="checkbox" value="Electricity" class="checkbox"> Electricity&nbsp;&nbsp;
-                                    </label>
-                                  </form>
-                            </div>
-                            <div class="col-lg-12">
-                                <h5>Rapid Testing</h5>
-                                <form >
-                                    <label class="checkbox-inline">
-                                      <input id="tdr_palu" type="checkbox" value="TDR_Palu" class="checkbox">TDR Palu&nbsp;&nbsp;
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input id="tdr_hiv" type="checkbox" value="TDR_HIV" class="checkbox">TDR HIV&nbsp;&nbsp;
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input id="widal" type="checkbox" value="Widal" class="checkbox">Widal&nbsp;&nbsp;
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input id="hb_sahli" type="checkbox" value="Hb_Sahli" class="checkbox">HB Sahli&nbsp;&nbsp;
-                                    </label>
-                                  </form>
+                            <div class="card" id="staff-card">
+                                <div class="header-icon" style="display:inline-block; float:right"></div>
+                                <div class="card-title" >
+                                    <h4>Staff Capabilities</h4>
+                                </div>
+                                <div class="card-body row" >
+                                    <div class="col-md-6" style="min-width:250px;">
+                                        <h5>Total Staff</h5>
+                                        <p class="reset_chart"><span class="staff_reset">Reset Chart</span></p>
+                                        <div class="col-lg-12 staff" style="height:150px"></div>
+                                    </div>
+                                    <div class=" col-md-6" style="min-width:250px;">
+                                        <h5>Patients Per Day</h5>
+                                        <p class="reset_chart"><span class="patient_reset">Reset Chart</span></p>
+                                        <div class="col-lg-12 patients" style="height:150px;"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 panel" style="padding-top:25px;">
-                            <div class="col-md-6">
-                                    <h4>Total Staff</h4>
-                                    <p class="reset_chart"><span class="staff_reset">Reset Chart</span></p>
-                                    <div class="col-lg-12 staff" style="height:150px"></div>
-                            </div>
-                            <div class=" col-md-6">
-                                    <h4>Patients Per Day</h4>
-                                    <p class="reset_chart"><span class="patient_reset">Reset Chart</span></p>
-                                    <div class="col-lg-12 patients" style="height:150px;"></div>
-                            </div>
-                    </div>
-
-
-
                 </div>
-
-                <div class="col-md-8">
-                    <div class="col-md-12 panel" style="margin-top:15px;">
+                <div class="col-sm-8">
+                    <div class="row">
                         <div class="col-md-6">
-                            <h3 style="padding-bottom:15px;">Facility Classification</h3>
-                            <div class="col-md-6">
-                                <h5>Affiliation</h5>
-                                <p class="reset_chart"><span class="affiliation_reset">Reset </span>|
-                                Sort by <span class="reset affiliation_value" style="color:blue">Count</span>
-                                or by <span class="reset affiliation_name" style="color:blue">Name</span></p>
-                                <div class="affiliation col-lg-12" style="margin-left:-25px;height:225px;overflow: auto"></div>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Sector</h5>
-                                <p class="reset_chart"><span class="sector_reset">Reset </span>|
-                                Sort by <span class="reset sector_value" style="color:blue">Count</span>
-                                or by <span class="reset sector_name" style="color:blue">Name</span></p>
-                                <div class="public_private col-lg-12"  style="margin-left:-25px;height:225px;overflow: auto"></div>
+                            <div class="card" id="facility-class-card">
+                                <div class="header-icon" style="display:inline-block; float:right"></div>
+                                <div class="card-title" >
+                                    <h4>Facility Classification</h4>
+                                </div>
+                                <div class="card-body row">
+                                    <div class="col-md-6">
+                                        <h5>Affiliation</h5>
+                                        <p class="reset_chart"><span class="affiliation_reset">Reset </span>|
+                                        Sort by <span class="reset affiliation_value" style="color:blue">Count</span>
+                                        or by <span class="reset affiliation_name" style="color:blue">Name</span></p>
+                                        <div class="affiliation col-lg-12" style="margin-left:-25px;height:225px;overflow: auto"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Sector</h5>
+                                        <p class="reset_chart"><span class="sector_reset">Reset </span>|
+                                        Sort by <span class="reset sector_value" style="color:blue">Count</span>
+                                        or by <span class="reset sector_name" style="color:blue">Name</span></p>
+                                        <div class="public_private col-lg-12"  style="margin-left:-25px;height:225px;overflow: auto"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h3 style="padding-bottom:15px;">Administrative District</h3>
-
-                            <div class="col-md-6">
-                                <h5>Regions</h5>
-                                <p class="reset_chart"><span class="region_reset">Reset </span>|
-                                Sort by <span class="reset region_value" style="color:blue">Count</span>
-                                or by <span class="reset region_name" style="color:blue">Name</span></p>
-                                <div class="region col-lg-12" style="margin-left:-25px;height:225px;overflow: auto"></div>
+                            <div class="card" id="administrative-card">
+                                <div class="header-icon" style="display:inline-block; float:right"></div>
+                                <div class="card-title" >
+                                    <h4>Administrative District</h4>
+                                </div>
+                                <div class="card-body row">
+                                    <div class="col-md-6">
+                                        <h5>Regions</h5>
+                                        <p class="reset_chart"><span class="region_reset">Reset </span>|
+                                        Sort by <span class="reset region_value" style="color:blue">Count</span>
+                                        or by <span class="reset region_name" style="color:blue">Name</span></p>
+                                        <div class="region col-lg-12" style="margin-left:-25px;height:225px;overflow: auto"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Prefecture</h5>
+                                        <p class="reset_chart"><span class="prefecture_reset">Reset </span>|
+                                        Sort by <span class="reset prefecture_value" style="color:blue">Count</span>
+                                        or by <span class="reset prefecture_name" style="color:blue">Name</span></p>
+                                        <div class="prefecture col-lg-12"  style="margin-left:-25px;height:225px;overflow: auto"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <h5>Prefecture</h5>
-                                <p class="reset_chart"><span class="prefecture_reset">Reset </span>|
-                                Sort by <span class="reset prefecture_value" style="color:blue">Count</span>
-                                or by <span class="reset prefecture_name" style="color:blue">Name</span></p>
-                                <div class="prefecture col-lg-12"  style="margin-left:-25px;height:225px;overflow: auto"></div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card" id="network-card">
+                                <div class="header-icon" style="display:inline-block; float:right"></div>
+                                <div class="card-title" >
+                                    <h4>Facility Network</h4>
+                                </div>
+                                <div class="card-body row">
+                                            <div class="col-lg-7">
+                                                <h3 class='poc_graph'><a class="btn btn-primary btn-xl js-scroll-trigger" href="#report-card">See The Survey Data</a></h3>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <select class="custom-select d-block w-100" id="overlay_map" required="" style="display: inline-block;">
+                                                  <option value="">Choose Inaccessibility Overlay...</option>
+                                                  <!--<option value="distance_access" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access</option>-->
+                                                  <option value="distance_access_hb" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access HB Sahli</option>
+                                                  <option value="distance_access_hiv" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access HIV</option>
+                                                  <option value="distance_access_palu" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access Palu</option>
+                                                  <option value="distance_access_widal" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access Widal</option>
+
+                                                  <option value="distance_pop_access_hb" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access HB Sahli</option>
+                                                  <option value="distance_pop_access_hiv" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access HIV</option>
+                                                  <option value="distance_pop_access_palu" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access Palu</option>
+                                                  <option value="distance_pop_access_widal" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access Widal</option>
+
+
+                                                  <!--  <option value="walking_outside_20km">Walking Access 20Km</option>-->
+                                                  <option value="walking_outside_20km_hb">Walking Access 20Km HB Sahli</option>
+                                                  <option value="walking_outside_20km_hiv">Walking Access 20Km HIV</option>
+                                                  <option value="walking_outside_20km_palu">Walking Access 20Km Palu</option>
+                                                  <option value="walking_outside_20km_widal">Walking Access 20Km Widal</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-12" id="map"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="card" id="training-card">
+                                <div class="header-icon" style="display:inline-block; float:right"></div>
+                                <div class="card-title" >
+                                </div>
+                                <div class="card-body row">
+                                    <div class="col-md-12">
+                                        <h4>Training Needs</h4>
+                                        <p class="reset_chart"><span class="training_reset">Reset </span>|
+                                        Sort by <span class="reset training_value" style="color:blue">Count</span>
+                                        or by <span class="reset training_name" style="color:blue">Name</span></p>
+                                    </div>
+                                    <div class="col-md-12 training" style="height:475px;overflow: auto"></div>
+                                </div>
                             </div>
                         </div>
 
                     </div>
-                    <div class="col-md-12 panel" style="margin-top:15px;">
-                        <div class="col-md-9" >
-                            <div class="row">
-                                <div class="col-lg-7">
-                                    <h3 class='poc_graph'>Facility Network | <a class="btn btn-primary btn-xl js-scroll-trigger" href="#facility-report">See The Survey Data</a></h3>
-                                </div>
-                                    <div class="col-lg-5">
-                                    <select class="custom-select d-block w-100" id="overlay_map" required="" style="display: inline-block;">
-                                      <option value="">Choose Inaccessibility Overlay...</option>
-                                      <!--<option value="distance_access" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access</option>-->
-                                      <option value="distance_access_hb" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access HB Sahli</option>
-                                      <option value="distance_access_hiv" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access HIV</option>
-                                      <option value="distance_access_palu" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access Palu</option>
-                                      <option value="distance_access_widal" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access Widal</option>
 
-                                      <option value="distance_pop_access_hb" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access HB Sahli</option>
-                                      <option value="distance_pop_access_hiv" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access HIV</option>
-                                      <option value="distance_pop_access_palu" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access Palu</option>
-                                      <option value="distance_pop_access_widal" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access Widal</option>
-
-
-                                      <!--  <option value="walking_outside_20km">Walking Access 20Km</option>-->
-                                      <option value="walking_outside_20km_hb">Walking Access 20Km HB Sahli</option>
-                                      <option value="walking_outside_20km_hiv">Walking Access 20Km HIV</option>
-                                      <option value="walking_outside_20km_palu">Walking Access 20Km Palu</option>
-                                      <option value="walking_outside_20km_widal">Walking Access 20Km Widal</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-12" id="map"></div>
-                        </div>
-                        <div class="col-lg-3" style="padding-top:15px">
-                            <h4>Training Needs</h4>
-                            <p class="reset_chart"><span class="training_reset">Reset </span>|
-                            Sort by <span class="reset training_value" style="color:blue">Count</span>
-                            or by <span class="reset training_name" style="color:blue">Name</span></p>
-                            <div class="col-md-12 training" style="margin-left:-25px;height:475px;overflow: auto"></div>
-                        </div>
-                    </div>
-
-                    <!--<div class="col-md-12 map" id="map" style="height:500px;width:500px;"></div>-->
                 </div>
             </div>
-
-        </div>
-        <div class="container-fluid" id="facility-report">
-            <div class="row" >
-                <h4 style="padding-bottom:15px;">Facility Report | <button  class="btn-sm btn-primary download_table" type="submit">Download Selection</button></h4>
-                <div class="dc-data-grid col-lg-12" style="overflow: auto;height:600px;" id="right1a" >
-
+            <div class="row">
+                <div class="card" id="report-card">
+                    <div class="header-icon" style="display:inline-block; float:right"></div>
+                    <div class="card-title" >
                     </div>
+                    <div class="card-body row">
+                        <div class="col-lg-12">
+                            <h4 style="padding-bottom:15px;">Facility Report | <button  class="btn-sm btn-primary download_table" type="submit">Download Selection</button></h4>
+                        </div>
+                        <div class="dc-data-grid col-lg-12" style="overflow: auto;height:600px;" id="right1a" ></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
