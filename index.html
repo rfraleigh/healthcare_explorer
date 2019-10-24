@@ -772,6 +772,9 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
             .margins({top: 0, right: 25, bottom: 50, left: 10})
             .x(d3.scale.ordinal())
             .labelOffsetX(5)
+            .colors(function (d) {
+                            return "#6baed6"
+                        })
             .label(function (d) {
                         return '(' + d.value + ')  ' + toTitleCase(d.key)
                     })
@@ -791,6 +794,9 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
                         return '(' + d.value + ')  ' + toTitleCase(d.key)
                     })
             .ordering(function(kv) { return -kv.value; })
+            .colors(function (d) {
+                            return "#6baed6"
+                        })
             .elasticX(true)
             .dimension(prefecture)
             .group(prefectureGroup);
@@ -799,6 +805,9 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
             .width($('div.affiliation').width())
             .height(affiliationGroup.all().length*pixels_per_row)
             .gap(1)
+            .colors(function (d) {
+                            return "#6baed6"
+                        })
             .margins({top: 0, right: 25, bottom: 50, left: 10})
             .x(d3.scale.ordinal())
             .labelOffsetX(5)
@@ -827,6 +836,9 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
             .width($('div.training').width())
             .height(trainingGroup.all().length*pixels_per_row)
             .gap(1)
+             .colors(function (d) {
+                            return "#6baed6"
+                        })
             .margins({top: 0, right: 25, bottom: 50, left: 10})
             .x(d3.scale.ordinal())
             .labelOffsetX(5)
@@ -866,6 +878,9 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
 
             .ordering(function(kv) { return -kv.value; })
             .elasticX(true)
+              .colors(function (d) {
+                            return "#6baed6"
+                        })
             .dimension(public_private)
             .group(public_privateGroup);
 
@@ -1602,7 +1617,7 @@ d3.select('#map').style('height', '500px').style('width', $('div#map').width())
                             <span class="filter-count"></span> facilities selected | <a
                                     href="javascript:dc.filterAll();dc.renderAll();">Reset All</a></p>
                         <p>The facility network shows each surveyed healthcare facility. The colored Google routes estimate biological sample or patient transport routes between facilities.</p>
-                        <p><b>Mouseover</b> a facility location to see the route a sample or patient would take to seek a diagnosis.</p>
+                        <p><b>Mouseover</b> a facility location to see possible routes a diagnostic sample or patient would take to seek a diagnosis.</p>
                             <h3 style="padding-top:15px;">Transport Legend</h3>
                         <img src="static/site/img/transport_legend_titled3.png" style="width:90%; position:relative; top:34%; left:5%;z-index: 1">
                         </div>
