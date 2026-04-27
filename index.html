@@ -213,6 +213,919 @@
       background-size: cover;
     }
 
+/* ---------------------------------------------------------------
+   Redesign layer: tokens, app shell, hero fade, ribbon, states.
+   Appended last so it overrides earlier inline styles.
+   --------------------------------------------------------------- */
+:root {
+  --space-1: 4px; --space-2: 8px; --space-3: 16px; --space-4: 24px; --space-5: 40px;
+  --radius: 6px; --radius-lg: 10px;
+  --text-meta: 12px; --text-body: 14px; --text-h: 16px; --text-section: 22px;
+  --c-bg: #f4f6f9; --c-surface: #ffffff; --c-ink: #111827; --c-muted: #6b7280; --c-rule: #e5e7eb;
+  --accent: #1f6feb; --accent-soft: #dbeafe; --accent-ink: #ffffff;
+  --chart-h-sm: 140px; --chart-h-md: 220px; --chart-h-tall: 480px;
+  --rail-w: 280px; --filters-w: 380px; --filters-w-open: 440px; --ribbon-w: 36px; --filters-tab-w: 44px; --ribbon-w-open: 320px; --appbar-h: 56px;
+  --shadow-1: 0 1px 2px rgba(17,24,39,.06), 0 1px 1px rgba(17,24,39,.04);
+  --shadow-2: 0 4px 12px rgba(17,24,39,.08), 0 2px 4px rgba(17,24,39,.04);
+}
+
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+html, body { overflow-x: hidden; } /* prevent accidental horizontal scroll from off-screen panel boxes */
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+  font-size: var(--text-body);
+  line-height: 1.5;
+}
+h1, h2, h3, h4, h5, h6 { color: var(--c-ink); margin: 0 0 var(--space-2); }
+p { margin: 0 0 var(--space-2); }
+.section-title {
+  font-size: var(--text-section); font-weight: 600;
+  margin: var(--space-5) 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--c-rule);
+}
+.section-title:first-of-type { margin-top: var(--space-3); }
+.meta { color: var(--c-muted); font-size: var(--text-meta); }
+
+/* ---- App bar ---- */
+.appbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: var(--space-3);
+  height: var(--appbar-h); padding: 0 var(--space-3);
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-rule);
+  box-shadow: var(--shadow-1);
+}
+.appbar-brand {
+  font-weight: 600; font-size: var(--text-h);
+  white-space: nowrap; margin-right: var(--space-3);
+}
+.appbar-nav { display: flex; gap: 0; list-style: none; padding: 0; margin: 0; }
+.appbar-nav a {
+  display: block;
+  padding: 0 var(--space-3);
+  line-height: var(--appbar-h);
+  color: var(--c-muted); text-decoration: none;
+  font-size: var(--text-body);
+  border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.appbar-nav a:hover { color: var(--c-ink); }
+.appbar-nav a.is-active { color: var(--accent); border-bottom-color: var(--accent); }
+.appbar-meta { margin-left: auto; display: flex; align-items: center; gap: var(--space-3); }
+.appbar-count { font-size: var(--text-meta); color: var(--c-muted); }
+.appbar-count b { color: var(--c-ink); font-weight: 600; }
+
+/* ---- Buttons ---- */
+button.btn-primary, .btn-primary, button.btn-ghost, .btn-ghost, .btn-link {
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 6px 14px;
+  font-size: var(--text-body);
+  font-family: inherit;
+  cursor: pointer;
+  line-height: 1.4;
+}
+button.btn-primary, .btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button.btn-primary:hover, .btn-primary:hover { filter: brightness(1.05); color: var(--accent-ink); }
+button.btn-ghost, .btn-ghost { background: transparent; color: var(--c-ink); border-color: var(--c-rule); }
+button.btn-ghost:hover, .btn-ghost:hover { background: var(--c-bg); }
+.btn-link { background: transparent; color: var(--accent); border: none; padding: 0; text-decoration: underline; }
+
+/* ---- Hero (splash on load; stays in normal document flow, user can scroll back up) ---- */
+.hero {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 70vh;
+  padding: var(--space-5) var(--space-4);
+  background: linear-gradient(135deg, rgba(13,42,74,.85), rgba(31,111,235,.75)), url("static/site/img/daily-report-unsplash.jpg");
+  background-size: cover; background-position: center;
+  color: #fff;
+  text-align: center;
+}
+.hero-inner { max-width: 760px; }
+.hero h1 { font-size: 36px; margin-bottom: 4px; color: #fff; }
+.hero-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,.9);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 var(--space-3);
+}
+.hero .lede { font-size: 18px; opacity: .95; margin-bottom: var(--space-3); }
+.hero .meta { color: rgba(255,255,255,.85); }
+.hero .caveat { color: rgba(255,255,255,.85); font-style: italic; max-width: 640px; margin: var(--space-3) auto; }
+.hero .btn-primary { margin-top: var(--space-4); padding: 10px 22px; font-size: var(--text-h); }
+
+/* ---- App shell: now block flow; primary-shell does the column work ---- */
+.app-shell {
+  background: var(--c-bg);
+  min-height: calc(100vh - var(--appbar-h));
+}
+
+/* ---- Primary shell: map | filters-ribbon | about-ribbon ----
+   Both filters and about start COLLAPSED to thin tabs (--ribbon-w each)
+   so the map dominates by default (Tufte: above all, show the data).
+   Each ribbon expands by adding its own width to the column. */
+.primary-shell {
+  display: grid;
+  grid-template-columns: 1fr var(--filters-tab-w) var(--ribbon-w);
+  transition: grid-template-columns .3s ease;
+}
+.primary-shell.filters-open {
+  grid-template-columns: 1fr calc(var(--filters-tab-w) + var(--filters-w-open)) var(--ribbon-w);
+}
+.primary-shell.ribbon-open {
+  grid-template-columns: 1fr var(--filters-tab-w) calc(var(--ribbon-w) + var(--ribbon-w-open));
+}
+.primary-shell.filters-open.ribbon-open {
+  grid-template-columns: 1fr calc(var(--filters-tab-w) + var(--filters-w-open)) calc(var(--ribbon-w) + var(--ribbon-w-open));
+}
+
+/* Canvas (column 1): contains the sticky map; stretches to row height so
+   the map has scroll-room inside it for sticky to engage */
+.canvas {
+  padding: var(--space-3) var(--space-4);
+  min-width: 0;
+}
+.canvas .dash-section { padding: 0; }
+.canvas .section-title { margin-top: 0; }
+.canvas #map-section {
+  position: sticky;
+  top: calc(var(--appbar-h) + var(--space-2));
+}
+
+/* Filters ribbon (column 2): collapsible, mirrors about-ribbon structure.
+   Panel always at full width inside, so dc.js charts measure correctly even
+   when the ribbon is collapsed; parent's overflow:hidden clips the panel
+   visually until the .filters-open class expands the grid column. */
+.filters-ribbon {
+  position: sticky; top: var(--appbar-h);
+  height: calc(100vh - var(--appbar-h));
+  background: var(--c-surface);
+  display: flex; flex-direction: row;
+  overflow: hidden;
+  z-index: 100;
+}
+.filters-ribbon .ribbon-tab {
+  flex: 0 0 var(--filters-tab-w);
+  width: var(--filters-tab-w);
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: none;
+  cursor: pointer;
+  padding: var(--space-4) 0;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase; letter-spacing: .1em;
+  font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px;
+  position: relative;
+  box-shadow: -2px 0 6px rgba(17,24,39,.08);
+}
+.filters-ribbon .ribbon-tab:hover { filter: brightness(1.08); }
+.filters-ribbon .ribbon-tab::before {
+  content: "\25C0"; /* ◀ chevron — points toward the panel reveal direction */
+  display: block;
+  font-size: 11px;
+  opacity: .85;
+}
+.filters-ribbon .ribbon-tab-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: inline-block;
+}
+/* When open, flip chevron and slightly desaturate to signal "active" */
+.primary-shell.filters-open .filters-ribbon .ribbon-tab::before {
+  content: "\25B6"; /* ▶ flipped — close direction */
+}
+.primary-shell.filters-open .filters-ribbon .ribbon-tab {
+  background: #1a4ea8; /* slightly darker blue when open */
+}
+.filters-ribbon .ribbon-panel {
+  flex: 0 0 var(--filters-w-open);
+  width: var(--filters-w-open);
+  padding: var(--space-3) var(--space-3) var(--space-5);
+  overflow-y: auto;
+  background: var(--c-surface);
+}
+.filters-ribbon .dash-section {
+  padding: var(--space-2) 0;
+  scroll-margin-top: calc(var(--appbar-h) + 8px);
+}
+.filters-ribbon .section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: var(--space-3) 0 var(--space-2);
+  padding-bottom: 6px;
+}
+.filters-ribbon .section-title:first-of-type { margin-top: 0; }
+.filters-ribbon .card {
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-2);
+}
+
+/* Capacity numeric subcards: stacked vertically (text was bleeding when side-by-side) */
+.capacity-numeric {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--c-rule);
+}
+.capacity-numeric:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+.capacity-numeric h5 { margin-top: 0; }
+
+/* Hint callout — guides user to open filters on first load. Clickable. */
+.hint-callout {
+  position: fixed;
+  top: 50%;
+  right: calc(var(--ribbon-w) + var(--filters-tab-w) + 14px);
+  transform: translateY(-50%);
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-2);
+  font-size: var(--text-body);
+  font-weight: 600;
+  z-index: 90;
+  animation: hint-bob 1.6s ease-in-out infinite;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  font-family: inherit;
+}
+.hint-callout:hover { filter: brightness(1.08); }
+.hint-callout::after {
+  content: '';
+  position: absolute;
+  right: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 7px solid transparent;
+  border-left-color: var(--accent);
+  border-right-width: 0;
+}
+.hint-callout.dismissed {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease, visibility .25s;
+}
+@keyframes hint-bob {
+  0%, 100% { transform: translate(0, -50%); }
+  50%      { transform: translate(-6px, -50%); }
+}
+@media (max-width: 991px) { .hint-callout { display: none; } }
+
+/* Report sits below primary-shell — full viewport width */
+.app-shell > #report {
+  padding: var(--space-3) var(--space-4) var(--space-5);
+  background: var(--c-bg);
+}
+.app-shell > #report .section-title { margin-top: 0; }
+
+/* ---- Filter rail ---- */
+.filter-rail {
+  position: sticky; top: var(--appbar-h);
+  height: calc(100vh - var(--appbar-h));
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-3);
+  background: var(--c-surface);
+  border-right: 1px solid var(--c-rule);
+}
+.filter-rail .rail-section {
+  font-size: var(--text-h); font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+.filter-rail h4 {
+  font-size: var(--text-meta); text-transform: uppercase; letter-spacing: .04em;
+  color: var(--c-muted); margin: var(--space-4) 0 var(--space-2);
+}
+.filter-count-summary {
+  font-size: var(--text-meta); color: var(--c-muted);
+  padding: var(--space-2) 0; border-bottom: 1px solid var(--c-rule);
+  margin-bottom: var(--space-3);
+}
+.filter-count-summary b { color: var(--c-ink); font-weight: 600; }
+.filter-count-summary .reset-link { display: inline-block; margin-left: var(--space-2); color: var(--accent); }
+.checkbox-group { display: flex; flex-direction: column; gap: 2px; margin: 0 0 var(--space-3); padding: 0; }
+.checkbox-group label {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: 4px 0; cursor: pointer;
+  font-size: var(--text-body); margin: 0;
+}
+.checkbox-group input[type="checkbox"] { margin: 0; }
+.filter-rail .card {
+  box-shadow: none; border: 1px solid var(--c-rule);
+  padding: var(--space-3); margin-top: var(--space-3);
+  border-radius: var(--radius);
+}
+.filter-rail .card:hover { box-shadow: none; }
+.filter-rail .card-title { margin-bottom: var(--space-2); }
+.filter-rail .card-title h4 {
+  font-size: var(--text-meta); text-transform: uppercase; letter-spacing: .04em;
+  color: var(--c-muted); margin: 0;
+}
+.filter-rail .chart-sm { width: 100%; height: var(--chart-h-sm); }
+.filter-rail .header-icon { color: var(--c-muted); cursor: pointer; }
+
+/* ---- Canvas ---- */
+.canvas { padding: var(--space-3) var(--space-4); min-width: 0; }
+.dash-section {
+  padding-top: var(--space-3); padding-bottom: var(--space-3);
+  scroll-margin-top: calc(var(--appbar-h) + 8px);
+}
+.canvas .card {
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--c-rule);
+  transition: box-shadow .2s;
+}
+.canvas .card:hover { box-shadow: var(--shadow-2); }
+.canvas .card-title {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.canvas .card-title h4 { font-size: var(--text-h); font-weight: 600; margin: 0; }
+.canvas .card .header-icon { color: var(--c-muted); cursor: pointer; }
+.canvas .card-body h5 {
+  font-size: var(--text-body); font-weight: 600;
+  margin-top: var(--space-2); margin-bottom: var(--space-1);
+}
+
+/* Chart sizing — replaces hardcoded heights */
+.chart-md { width: 100%; height: var(--chart-h-md); overflow: auto; margin-left: 0; }
+.chart-tall { width: 100%; height: var(--chart-h-tall); overflow: auto; }
+
+/* Reset/sort row */
+.reset_chart { font-size: var(--text-meta); color: var(--c-muted); margin: var(--space-1) 0 var(--space-2); }
+.reset_chart [class$="_reset"] {
+  color: var(--c-muted); cursor: pointer;
+  padding: 2px 6px; border-radius: var(--radius);
+}
+.reset_chart [class$="_reset"]:hover { background: var(--c-bg); color: var(--c-ink); }
+.sort-toggle { color: var(--c-muted); }
+.sort-toggle a {
+  color: var(--c-muted); cursor: pointer; text-decoration: none;
+  padding: 0 var(--space-1); border-radius: var(--radius);
+}
+.sort-toggle a:hover { color: var(--accent); background: var(--accent-soft); }
+
+/* ---- Card intro: explanatory copy above primary controls ---- */
+.card-intro {
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px dashed var(--c-rule);
+}
+.card-intro p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--c-ink);
+  margin: 0 0 var(--space-2);
+}
+.card-intro p:last-child {
+  margin-bottom: 0;
+  color: var(--c-muted);
+  font-size: 12px;
+}
+.card-intro b { font-weight: 600; color: var(--c-ink); }
+.card-intro p.meta b { color: var(--c-muted); }
+
+/* ---- Map & overlay controls ---- */
+.overlay-controls {
+  display: flex; align-items: center; gap: var(--space-3);
+  margin-bottom: var(--space-3); flex-wrap: wrap;
+  position: relative;
+}
+/* Inline variant: lives in card-title alongside the h4 to save vertical space */
+.overlay-controls--inline {
+  margin-bottom: 0;
+  flex: 1 1 360px;
+  max-width: 580px;
+  justify-content: flex-end;
+}
+.overlay-controls--inline label {
+  flex: 0 0 auto;
+}
+.overlay-controls--inline select {
+  flex: 1 1 240px;
+  max-width: 420px;
+}
+@media (max-width: 1100px) {
+  .overlay-controls--inline { flex: 1 1 100%; max-width: none; justify-content: flex-start; margin-top: var(--space-2); }
+}
+.overlay-controls label { font-size: var(--text-meta); color: var(--c-muted); margin: 0; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.overlay-controls select {
+  flex: 1 1 360px; max-width: 520px;
+  padding: 6px 10px;
+  border: 1px solid var(--c-rule); border-radius: var(--radius);
+  background: var(--c-surface);
+  font-family: inherit; font-size: var(--text-body);
+}
+.overlay-help {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--c-bg); color: var(--c-muted);
+  font-size: var(--text-meta); font-weight: 700;
+  cursor: help; border: 1px solid var(--c-rule);
+}
+.overlay-help-popover {
+  display: none;
+  position: absolute; top: calc(100% + 6px); right: 0;
+  width: 320px; padding: var(--space-3);
+  background: var(--c-surface); color: var(--c-ink);
+  border: 1px solid var(--c-rule); border-radius: var(--radius);
+  box-shadow: var(--shadow-2);
+  font-weight: 400; text-align: left; z-index: 10;
+}
+.overlay-help-popover p { margin: 0 0 var(--space-2); font-size: var(--text-meta); line-height: 1.4; }
+.overlay-help-popover p:last-child { margin: 0; }
+.overlay-help:hover .overlay-help-popover,
+.overlay-help:focus .overlay-help-popover,
+.overlay-help:focus-within .overlay-help-popover { display: block; }
+
+#map { width: 100% !important; height: 420px !important; border-radius: var(--radius); }
+@media (min-height: 900px) {
+  #map { height: 520px !important; }
+}
+
+/* ---- About ribbon ---- */
+.about-ribbon {
+  position: sticky; top: var(--appbar-h);
+  height: calc(100vh - var(--appbar-h));
+  background: var(--c-surface);
+  border-left: 1px solid var(--c-rule);
+  display: flex; flex-direction: row;
+  overflow: hidden;
+}
+.about-ribbon .ribbon-tab {
+  flex: 0 0 var(--ribbon-w); width: var(--ribbon-w);
+  background: var(--c-surface);
+  border: none; border-left: 1px solid var(--c-rule);
+  cursor: pointer;
+  padding: var(--space-3) 0;
+  color: var(--c-muted);
+  font-size: var(--text-meta);
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.about-ribbon .ribbon-tab:hover { color: var(--c-ink); background: var(--c-bg); }
+.about-ribbon .ribbon-tab-text { writing-mode: vertical-rl; transform: rotate(180deg); display: inline-block; }
+.about-ribbon .ribbon-panel {
+  flex: 0 0 var(--ribbon-w-open); width: var(--ribbon-w-open);
+  padding: var(--space-4);
+  overflow-y: auto;
+  display: none;
+}
+.primary-shell.ribbon-open .about-ribbon .ribbon-panel { display: block; }
+.primary-shell.ribbon-open .about-ribbon .ribbon-tab { background: var(--c-bg); color: var(--c-ink); }
+.ribbon-panel h3 { font-size: var(--text-section); font-weight: 600; margin-bottom: var(--space-3); }
+.ribbon-panel h4 {
+  font-size: var(--text-meta); text-transform: uppercase; letter-spacing: .04em;
+  color: var(--c-muted); margin: var(--space-4) 0 var(--space-2);
+}
+.ribbon-panel .lede { font-size: var(--text-body); }
+.ribbon-panel .caveat {
+  background: #fef3c7; color: #78350f;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  font-size: var(--text-meta);
+}
+.ribbon-panel ul { padding-left: var(--space-4); font-size: var(--text-meta); color: var(--c-ink); margin: 0 0 var(--space-3); }
+.ribbon-panel ul li { margin-bottom: var(--space-1); }
+.ribbon-panel ul.acknowledgments {
+  list-style: none;
+  padding-left: 0;
+  border-left: 2px solid var(--c-rule);
+}
+.ribbon-panel ul.acknowledgments li {
+  padding: 4px 0 4px var(--space-3);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-meta);
+  line-height: 1.4;
+}
+.ribbon-panel ul.acknowledgments li b {
+  font-size: var(--text-meta);
+  font-weight: 600;
+  color: var(--c-ink);
+  display: block;
+  margin-bottom: 2px;
+}
+.ribbon-panel ul.acknowledgments li:not(:has(b)) { color: var(--c-muted); }
+.ribbon-legend-img { max-width: 100%; height: auto; border: 1px solid var(--c-rule); border-radius: var(--radius); margin-top: var(--space-2); }
+.ribbon-panel .copyright {
+  margin-top: var(--space-4); padding-top: var(--space-3);
+  border-top: 1px solid var(--c-rule);
+}
+
+/* ---- States: loading / error / empty ---- */
+.app-loading {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 280px; text-align: center;
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin: var(--space-3) 0;
+  border: 1px solid var(--c-rule);
+}
+.canvas.is-loaded .app-loading { display: none; }
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--c-rule);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--space-3);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.grid-empty {
+  padding: var(--space-5);
+  text-align: center;
+  color: var(--c-muted);
+}
+.grid-empty p { margin-bottom: var(--space-2); }
+
+/* ---- Data grid: fluid override of inline width ---- */
+.dc-data-grid { width: 100%; max-height: 600px; overflow: auto; }
+.dc-grid-item { width: auto !important; min-width: 280px; max-width: 380px; }
+.dc-grid-group { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
+.dc-table-label {
+  background: var(--c-bg); font-weight: 600;
+  padding: var(--space-2); border-radius: var(--radius);
+  margin-bottom: var(--space-2);
+}
+
+/* dc chart text — keep readable */
+.canvas .dc-chart g.row text,
+.filter-rail .dc-chart g.row text { fill: var(--c-ink); font-size: 11px; }
+
+/* ---- Responsive ---- */
+@media (max-width: 991px) {
+  .primary-shell, .primary-shell.filters-open, .primary-shell.ribbon-open,
+  .primary-shell.filters-open.ribbon-open { grid-template-columns: 1fr; }
+  .filters-ribbon, .about-ribbon { position: static; height: auto; }
+  .filters-ribbon { flex-direction: column; }
+  .filters-ribbon .ribbon-tab { width: 100%; padding: var(--space-2) var(--space-3); }
+  .filters-ribbon .ribbon-tab-text { writing-mode: horizontal-tb; transform: none; }
+  .filters-ribbon .ribbon-panel { width: 100%; }
+  .canvas #map-section { position: static; }
+  .appbar-nav { display: none; }
+  .appbar-brand { font-size: var(--text-body); }
+  .hero { min-height: 50vh; }
+  .hero h1 { font-size: 28px; }
+  #map { height: 380px !important; }
+}
+@media (max-width: 640px) {
+  .canvas { padding: var(--space-2); }
+  .canvas .card { padding: var(--space-3); }
+  .canvas .card .col-md-6 { width: 100%; }
+  .chart-md { height: 180px; }
+}
+
+/* ---- Primary 2-col grid: sticky map | scrolling charts ---- */
+.primary-grid { display: block; }
+.primary-grid__map { min-width: 0; }
+.primary-grid__charts { min-width: 0; }
+@media (min-width: 1200px) {
+  .primary-grid {
+    display: grid;
+    grid-template-columns: minmax(440px, 1.15fr) minmax(360px, 1fr);
+    gap: var(--space-3);
+    align-items: start;
+    margin-bottom: var(--space-3);
+  }
+  .primary-grid__map {
+    position: sticky;
+    top: calc(var(--appbar-h) + var(--space-2));
+    align-self: start;
+  }
+  .primary-grid__map .dash-section { padding: 0; }
+  .primary-grid__map .section-title { margin-top: 0; }
+  .primary-grid__map #map { height: 460px !important; }
+}
+
+/* ---- Map: clip overflow, force fluid width over inline JS sizing ---- */
+#map {
+  width: 100% !important;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+#network-card { position: relative; overflow: hidden; }
+#network-card .card-body { position: relative; }
+
+/* ---- Map legend (anchored to map area, Leaflet-style) ---- */
+.map-legend {
+  position: absolute;
+  bottom: 14px;
+  left: 56px;        /* clear the leaflet zoom buttons */
+  z-index: 750;       /* above leaflet markers (600) and tooltips (650) */
+  background: rgba(255,255,255,.96);
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  border: 1px solid var(--c-rule);
+  max-width: 220px;
+  pointer-events: none;
+}
+.map-legend img { display: block; max-width: 100%; height: auto; }
+@media (max-width: 640px) {
+  .map-legend { max-width: 160px; left: 50px; bottom: 10px; }
+}
+
+/* ---- Z-index: ensure appbar and ribbon sit above Leaflet panes (max 700) ---- */
+.appbar { z-index: 900; }
+.about-ribbon { z-index: 800; }
+
+/* ---- Data grid: dense responsive grid ----
+   Note on dc.js v2.1.10 markup: each region group becomes a <div class="dc-grid-top">
+   containing an inner <div class="dc-grid-group"><h1 class="dc-grid-label"></h1></div>
+   followed by sibling <div class="dc-grid-item"> facility cards. The grid container
+   is therefore .dc-grid-top, NOT .dc-grid-group. */
+.dc-data-grid { width: 100%; max-height: 760px; overflow: auto; padding: 0; }
+.dc-data-grid .dc-grid-top {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-2);
+  padding: 0 !important;
+  margin: 0 0 var(--space-3) 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  clear: both;
+}
+.dc-data-grid .dc-grid-group {
+  grid-column: 1 / -1;
+  padding: var(--space-2) var(--space-3) !important;
+  background: var(--c-bg) !important;
+  border-radius: var(--radius);
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.dc-data-grid .dc-grid-label {
+  font-size: var(--text-meta) !important;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--c-muted) !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.dc-data-grid .dc-grid-item {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: var(--space-3) !important;
+  float: none !important;
+  background: var(--c-surface) !important;
+  border: 1px solid var(--c-rule) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-1) !important;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: left !important;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* New compact facility-card structure (rewritten facility_card function) */
+.dc-grid-item .fc-head { margin: 0 0 6px; padding-bottom: 6px; border-bottom: 1px solid var(--c-rule); }
+.dc-grid-item .fc-head h2 {
+  font-size: var(--text-h) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  color: var(--c-ink) !important;
+  line-height: 1.25 !important;
+  text-align: left !important;
+}
+.dc-grid-item .fc-loc { color: var(--c-muted); font-size: 11px; margin-top: 2px; }
+.dc-grid-item .fc-body {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 10px;
+  row-gap: 2px;
+  margin: 0 0 6px;
+}
+.dc-grid-item .fc-row { display: contents; }
+.dc-grid-item .fc-k { color: var(--c-muted); font-weight: 500; white-space: nowrap; }
+.dc-grid-item .fc-v { color: var(--c-ink); }
+.dc-grid-item .fc-section { margin-top: 6px; }
+.dc-grid-item .fc-section h3 {
+  font-size: 10px !important;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--c-muted) !important;
+  margin: 0 0 3px !important;
+  font-weight: 700 !important;
+  text-align: left !important;
+}
+.dc-grid-item .fc-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+.dc-grid-item .fc-tag {
+  display: inline-block;
+  padding: 1px 7px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.dc-grid-item .fc-exams {
+  font-size: 11px;
+  color: var(--c-ink);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Defensive overrides if the OLD facility_card template ever runs */
+.dc-grid-item h1, .dc-grid-item h2 { text-align: left !important; }
+.dc-grid-item h2[style*="min-height"] { min-height: 0 !important; }
+.dc-grid-item p[style*="min-height"] { min-height: 0 !important; }
+.dc-grid-item .row { margin-left: 0 !important; margin-right: 0 !important; }
+.dc-grid-item [class^="col-"], .dc-grid-item [class*=" col-"] {
+  padding-left: 0 !important;
+  padding-right: var(--space-2) !important;
+}
+
+/* ---- Active filters bar ---- */
+.active-filters {
+  position: sticky;
+  top: var(--appbar-h);
+  z-index: 89;
+  background: var(--c-surface);
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--c-rule);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: var(--text-meta);
+  min-height: 40px;
+}
+.active-filters[hidden] { display: none; }
+.active-filters-label {
+  color: var(--c-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-size: 11px;
+  margin-right: 4px;
+}
+.active-filters .empty-state { color: var(--c-muted); font-style: italic; }
+.active-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 4px 3px 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 999px;
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 280px;
+}
+.active-chip-text { overflow: hidden; text-overflow: ellipsis; }
+.active-chip button {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  width: 18px; height: 18px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: inherit;
+}
+.active-chip button:hover { background: var(--accent); color: var(--accent-ink); }
+.active-clear-all {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--c-muted);
+  cursor: pointer;
+  font-size: var(--text-meta);
+  text-decoration: underline;
+  font-family: inherit;
+  padding: 0 4px;
+}
+.active-clear-all:hover { color: var(--accent); }
+
+/* ---- Ribbon caveat: subtle note, not alarm banner ---- */
+.ribbon-panel .caveat {
+  background: var(--c-bg);
+  color: var(--c-muted);
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--c-rule);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: var(--text-meta);
+  font-style: italic;
+}
+
+/* ---- Hero meta: remove italic emphasis if a caveat sneaks back in ---- */
+.hero .caveat {
+  background: transparent;
+  color: rgba(255,255,255,.85);
+  font-style: italic;
+  padding: 0;
+}
+
+/* ---- Chip-style binary filters (Tufte: direct annotation > remote checkbox) ---- */
+.chip-group {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 0; margin: 0 0 var(--space-3) 0;
+}
+.chip-group .chip-label {
+  display: inline-flex; align-items: center;
+  padding: 5px 12px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-rule);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: var(--text-meta);
+  color: var(--c-ink);
+  user-select: none;
+  transition: background .12s, border-color .12s, color .12s;
+  margin: 0;
+}
+.chip-group .chip-label:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.chip-group .chip-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0; height: 0;
+}
+.chip-group .chip-label.is-checked,
+.chip-group .chip-label:has(input:checked) {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
+.filter-block { margin: 0 0 var(--space-3); }
+.filter-block-label {
+  display: block;
+  font-size: var(--text-meta);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--c-muted);
+  margin: 0 0 var(--space-2);
+  font-weight: 600;
+}
+
+/* Capabilities section — chip filters live here, no need for heavy card chrome */
+#capabilities .card { padding: var(--space-3) var(--space-4); }
+#capabilities .card-title h4 { font-size: var(--text-h); }
+
+/* Capacity card: training (full width) + staff/patients side-by-side below */
+.canvas .chart-sm, .filters-rail .chart-sm { width: 100%; height: var(--chart-h-sm); }
+.numeric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--c-rule);
+}
+.numeric-row > div { min-width: 0; }
+.numeric-row h5 { margin-top: 0; }
+@media (max-width: 480px) {
+  .numeric-row { grid-template-columns: 1fr; }
+}
+
+/* Primary-grid: with rail gone, give filters a generous min so charts breathe */
+@media (min-width: 1200px) {
+  .primary-grid {
+    grid-template-columns: minmax(480px, 1.2fr) minmax(420px, 1fr);
+  }
+}
     </style>
 
 </head>
@@ -1421,57 +2334,72 @@ d3.select('#map').style('height', '500px').style('width', $('div#network-card').
 
 
     function facility_card(d){
-            var card_text = "";
-            var div_row_start ='<div class="row">';
-            var div_row_end = '</div>';
-            var div_L_start ='<div class="col-md-7">';
-            var div_L_end = '</div>';
-            var div_R_start ='<div class="col-md-5">';
-            var div_R_end = '</div>';
-
-            var title = '<h2 style="font-size:14px;min-height:20px;">'+toTitleCase(d.name_of_laboratory)+'</h2>';
-            var subtitle = '<h2 style="font-size:12px;min-height:10px;margin-top:-5px;margin-bottom:5px">'+toTitleCase(d.prefecture)+', '+toTitleCase(d.region)+'</h2>';
-            var inst_head = '<h2 style="font-size:12px;min-height:10px;margin-top:5px;margin-bottom:5px">Inst. Head: '+toTitleCase(d.institute_head)+'</h2>';
-            var lab_head = '<h2 style="font-size:12px;min-height:10px;margin-top:5px;margin-bottom:15px">Lab Head: '+toTitleCase(d.lab_head)+'</h2>';
-
-            function latlng(d){if(d.latitude){return '('+d.latitude.slice(0,7)+', '+d.longitude.slice(0,7)+')' }return ""}
-            var location = '<h2 style="font-size:14px;text-align:left">Facility</h2>' +
-                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:60px;">' +
-                '<b>Aff</b>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+d.affiliation.toUpperCase()+'<br>' +
-                '<b>Type</b>:&nbsp;&nbsp;'+toTitleCase(d.public_private)+'<br>' +
-                '<b>Loc</b>:&emsp;'+latlng(d)+'<br>' +
-                '<b>Staff</b>:&emsp;'+d.total_staff+'<br>' +
-                '<b>Patients/day</b>:&emsp;'+d.patients_per_day+'<br>' +
-                '</p>';
-
-            var amenities = '<h2 style="font-size:14px;text-align:left">Features</h2>' +
-                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:60px;">';
-            var amenity_list=['phone','fax','computer','internet','electricity'];
-            amenity_list.forEach(function(a){if (d[a]==1){amenities+=toTitleCase(a)+'<br>'}});
-            amenities +='</p>';
-
-            var rapid_tests = '<h2 style="font-size:14px;text-align:left">Rapid Tests</h2>' +
-                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:50px;">';
-            var test_list=['tdf_palu','tdr_hiv','widal','hb_sahli'];
-            test_list.forEach(function(a){if (d[a]==1){rapid_tests+=toTitleCase(a.replace("_"," "))+'<br>'}});
-            rapid_tests +='</p>';
-
-            var all_tests = '<h2 style="font-size:14px;text-align:left">List of Exams</h2>' +
-                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:50px;">'+d.list_of_all_exams+'</p>';
-
-
-            var training_needs = '<h2 style="font-size:14px;text-align:left">Training Needs</h2>' +
-                '<p style="font-size:12px;text-align:left;margin-top:-5px;min-height:50px;">';
-            if (d.training){
-                d.training.forEach(function(a){if (a!='nan'){training_needs+=toTitleCase(a)+'<br>'}});
-            }
-            training_needs +='</p>';
-
-            card_text = div_row_start+title+subtitle+inst_head+lab_head+
-                div_L_start+location+training_needs+div_L_end+div_R_start+ amenities+rapid_tests+div_R_end+ div_row_end+
-                div_row_start+all_tests+div_row_end;
-            return card_text
+        // Dense compact card: skip empty fields, use tag pills for lists.
+        function clean(v){
+            if (v === undefined || v === null) return '';
+            v = String(v).trim();
+            if (!v || v === 'nan' || v === 'undefined' || v === 'NaN') return '';
+            return v;
         }
+        function row(label, raw){
+            var v = clean(raw);
+            if (!v) return '';
+            return '<div class="fc-row"><span class="fc-k">' + label + '</span><span class="fc-v">' + v + '</span></div>';
+        }
+        function tagSection(label, items){
+            items = (items || []).map(clean).filter(Boolean);
+            if (!items.length) return '';
+            return '<div class="fc-section"><h3>' + label + '</h3><div class="fc-tags">' +
+                items.map(function(t){ return '<span class="fc-tag">' + toTitleCase(t) + '</span>'; }).join('') +
+                '</div></div>';
+        }
+        function latlng(d){
+            var lat = clean(d.latitude), lng = clean(d.longitude);
+            if (lat && lng) return lat.slice(0,7) + ', ' + lng.slice(0,7);
+            return '';
+        }
+
+        var name = clean(d.name_of_laboratory);
+        var loc_parts = [clean(d.prefecture), clean(d.region)].filter(Boolean).map(toTitleCase);
+        var aff = clean(d.affiliation).toUpperCase();
+        var type = toTitleCase(clean(d.public_private));
+        var inst = toTitleCase(clean(d.institute_head));
+        var labh = toTitleCase(clean(d.lab_head));
+
+        var amenity_list  = ['phone','fax','computer','internet','electricity'].filter(function(a){ return d[a] == 1; });
+        var test_list     = ['tdr_palu','tdr_hiv','widal','hb_sahli'].filter(function(a){ return d[a] == 1; });
+        var test_pretty   = test_list.map(function(t){
+            return ({tdr_palu:'Malaria RDT', tdr_hiv:'HIV RDT', widal:'Widal', hb_sahli:'HB Sahli'})[t] || t;
+        });
+        var training_arr  = (d.training || []).slice();
+
+        var html = '';
+        html += '<div class="fc-head">';
+        html +=   '<h2>' + (name ? toTitleCase(name) : '&mdash;') + '</h2>';
+        if (loc_parts.length) html += '<div class="fc-loc">' + loc_parts.join(', ') + '</div>';
+        html += '</div>';
+
+        html += '<div class="fc-body">';
+        html += row('Affiliation', aff);
+        html += row('Type', type);
+        html += row('Coords', latlng(d));
+        html += row('Staff', clean(d.total_staff));
+        html += row('Patients/day', clean(d.patients_per_day));
+        if (inst) html += row('Inst. head', inst);
+        if (labh) html += row('Lab head', labh);
+        html += '</div>';
+
+        html += tagSection('Amenities', amenity_list);
+        html += tagSection('Rapid tests', test_pretty);
+        html += tagSection('Training needs', training_arr);
+
+        var exams = clean(d.list_of_all_exams);
+        if (exams) {
+            html += '<div class="fc-section"><h3>Exams offered</h3><div class="fc-exams">' + exams + '</div></div>';
+        }
+
+        return html;
+    }
 
         var facilities = dc.dataGrid(".dc-data-grid")
             .dimension(facility)
@@ -1479,7 +2407,24 @@ d3.select('#map').style('height', '500px').style('width', $('div#network-card').
             .size(250)
             .html (facility_card)
             .sortBy(function (d) {
-                return d.region;
+                // Score by completeness; negate so .order(ascending) puts most-complete first
+                // and blank/sparse cards end up at the end of each region group.
+                function has(v) {
+                    if (v === undefined || v === null) return false;
+                    var s = String(v).trim();
+                    return s !== '' && s !== 'nan' && s !== 'undefined' && s !== 'NaN';
+                }
+                var s = 0;
+                ['affiliation','public_private','latitude','total_staff','patients_per_day',
+                 'list_of_all_exams','institute_head','lab_head','name_of_laboratory'].forEach(function(f){
+                    if (has(d[f])) s += 1;
+                });
+                ['phone','fax','computer','internet','electricity_existence',
+                 'tdr_palu','tdr_hiv','widal','hb_sahli'].forEach(function(f){
+                    if (d[f] == 1) s += 1;
+                });
+                if (Array.isArray(d.training) && d.training.filter(has).length > 0) s += 1;
+                return -s;
                 })
             .order(d3.ascending)
 
@@ -1616,7 +2561,6 @@ d3.select('#map').style('height', '500px').style('width', $('div#network-card').
     minimize_card('#administrative-card')
     minimize_card('#staff-card')
     minimize_card('#amenity-card')
-    minimize_card('#network-card')
     minimize_card('#training-card')
 
 
@@ -1626,254 +2570,295 @@ d3.select('#map').style('height', '500px').style('width', $('div#network-card').
 
 
 
-<header class="audience d-flex">
-      <div class="container text-center my-auto landing">
-          <div class="mb-1 " style="text-align:left; padding-top:25px;padding-bottom:5px;">
-                        <h2 class="script">Guinea Healthcare Survey Explorer</h2>
-                        <h4 class="script">Explore the key metrics that inform on resource allocation and sample diagnosis within the Guinea healthcare system.</h4>
+<!-- ===== App bar (sticky) ===== -->
+<nav class="appbar" id="appbar" role="navigation" aria-label="Dashboard">
+  <span class="appbar-brand">Guinea Healthcare Explorer</span>
+  <ul class="appbar-nav">
+    <li><a href="#capabilities" data-section="capabilities">Capabilities</a></li>
+    <li><a href="#where" data-section="where">Where</a></li>
+    <li><a href="#what" data-section="what">What</a></li>
+    <li><a href="#capacity" data-section="capacity">Capacity</a></li>
+    <li><a href="#report" data-section="report">Report</a></li>
+  </ul>
+  <div class="appbar-meta">
+    <span class="appbar-count dc-data-count" aria-live="polite">
+      <b class="filter-count"></b> / <b class="total-count"></b> facilities
+    </span>
+    <button type="button" class="btn-ghost" id="btn-reset-all">Reset filters</button>
+  </div>
+</nav>
 
-                        <p>Over 100 medical facilities in Guinea were surveyed in 2016.
-                             Included are select features relating to sample transport and rapid diagnosis.
-                        </p>
-                        <p>Although the locations are actual surveyed health care facilities,
-                            the survey responses have been fabricated and is not representative of the actual survey results.</p>
+<!-- ===== Active filters bar (sticky below appbar; hidden when no filters active) ===== -->
+<div class="active-filters" id="active-filters" hidden role="region" aria-label="Active filters"></div>
 
-              <p><span class="reset_"></span></p>
+<!-- ===== Hint callout: guides user to open filters ribbon. Clickable. ===== -->
+<button type="button" class="hint-callout" id="hint-filters" aria-label="Open filters">Click to filter facilities</button>
 
-        </div>
-          <div class="cta col-lg-6">
-              <a class="btn btn-primary btn-xl js-scroll-trigger" href="#arl2017list">Explore the Database</a>
-          </div>
-          <!--<div class="cta col-lg-6">
-              <p style="text-align:right;">Developed by Dr. Robbie Fraleigh<br><i>Updated 09/26/2018</i></p>
-          </div>-->
+<!-- ===== Hero (splash; user can scroll back up to see it any time) ===== -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <h1>Guinea Healthcare Explorer</h1>
+    <p class="hero-subtitle">Spatial analysis of health facility access</p>
+    <p class="lede">Where can rapid diagnosis happen in Guinea? Explore lab capability, geographic access, and sample-transport routes across ~106 facilities surveyed in 2016.</p>
+    <p class="meta">Heatmap methodology presented at ASTMH 2018. Facility locations are real surveyed sites, but survey responses have been fabricated and don&rsquo;t represent the actual results.</p>
+    <button type="button" class="btn-primary" id="btn-open-dashboard">Open dashboard</button>
+  </div>
+</section>
 
+<!-- ===== Main shell: 3-col primary-shell (map | filters-rail | about-ribbon) + report below ===== -->
+<div id="arl2017list" class="app-shell">
 
+  <div class="primary-shell">
 
-
+    <!-- Column 1: Map (sticky inside canvas — dominant real estate) -->
+    <main class="canvas" id="canvas">
+      <!-- Loading spinner (auto-hidden once any chart or the map renders) -->
+      <div class="app-loading" id="app-loading" role="status" aria-live="polite">
+        <div class="spinner"></div>
+        <p>Loading facilities&hellip;</p>
       </div>
-        <div class="copyright" style="position:absolute; margin-left: auto;margin-right: auto;left:5%; right:5%; bottom:5%;"><p style="color:black">Copyright <a style="color:black" href="https://www.psu.edu/copyright-information">@ 2018 The Pennsylvania State University </a></p></div>
-        <div class="overlay"></div>
-    </header>
-    <div id="arl2017list">
-        <div class="container-fluid"  style="padding-left:25px;padding-right:25px;padding-top:25px;background:#c9d3de">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card" id="description-card">
-                                <div class="header-icon" style="display:inline-block; float:right"></div>
-                                <div class="card-title">
-                                    <h4>Guinea Healthcare Survey Explorer</h4>
-                                </div>
-                                <div class="card-body row">
-                                    <div class="col-md-12 dc-data-count"  style="clear:both">
-                                            <h5>Reporting on <span class="total-count"></span> Medical Facilities</h5>
-                                            <p>This chart is <b>interactive</b>. Downselect a custom query by clicking on elements within each chart.
-                                            <span class="filter-count"></span> facilities selected | <a
-                                                    href="javascript:dc.filterAll();dc.renderAll();">Reset All</a></p>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <p>The facility network shows each surveyed healthcare facility. The colored Google routes estimate biological sample or patient transport routes between facilities.</p>
-                                        <p><b>Mouseover</b> a facility location to see possible routes a diagnostic sample or patient would take to seek a diagnosis.</p>
-                                            <h5 style="padding-top:15px;">Transport Legend</h5>
-                                        <img src="static/site/img/transport_legend_titled3.png" style="width:90%; position:relative; top:34%; left:5%;z-index: 1">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="card" id="amenity-card">
-                                <div class="header-icon" style="display:inline-block; float:right"></div>
-                                <div class="card-title" >
-                                    <h4>Facility Capabilities</h4>
-                                </div>
-                                <div class="card-body row">
-                                    <div class="col-lg-12 " style="padding-top:25px;">
-                                        <h5>Facility Amenities</h5>
-                                        <form>
-                                            <label class="checkbox-inline">
-                                              <input id="phone" type="checkbox" value="Phone" class="checkbox"> Phone&nbsp;&nbsp;
-                                            </label>
-                                            <label class="checkbox-inline">
-                                              <input id="fax" type="checkbox" value="Fax" class="checkbox"> Fax&nbsp;&nbsp;
-                                            </label>
-                                            <label class="checkbox-inline">
-                                              <input id="computer" type="checkbox" value="Computer" class="checkbox"> Computer&nbsp;&nbsp;
-                                            </label>
-                                            <label class="checkbox-inline">
-                                              <input id="internet" type="checkbox" value="Internet" class="checkbox"> Internet&nbsp;&nbsp;
-                                            </label>
-                                            <label class="checkbox-inline">
-                                              <input id="electricity_existence" type="checkbox" value="Electricity" class="checkbox"> Electricity&nbsp;&nbsp;
-                                            </label>
-                                          </form>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <h5>Rapid Testing</h5>
-                                        <form >
-                                            <label class="checkbox-inline">
-                                              <input id="tdr_palu" type="checkbox" value="TDR_Palu" class="checkbox">TDR Palu&nbsp;&nbsp;
-                                            </label>
-                                            <label class="checkbox-inline">
-                                              <input id="tdr_hiv" type="checkbox" value="TDR_HIV" class="checkbox">TDR HIV&nbsp;&nbsp;
-                                            </label>
-                                            <label class="checkbox-inline">
-                                              <input id="widal" type="checkbox" value="Widal" class="checkbox">Widal&nbsp;&nbsp;
-                                            </label>
-                                            <label class="checkbox-inline">
-                                              <input id="hb_sahli" type="checkbox" value="Hb_Sahli" class="checkbox">HB Sahli&nbsp;&nbsp;
-                                            </label>
-                                          </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="col-md-12">
-                            <div class="card" id="staff-card">
-                                <div class="header-icon" style="display:inline-block; float:right"></div>
-                                <div class="card-title" >
-                                    <h4>Staff Capabilities</h4>
-                                </div>
-                                <div class="card-body row" >
-                                    <div class="col-md-6" style="min-width:250px;">
-                                        <h5>Total Staff</h5>
-                                        <p class="reset_chart"><span class="staff_reset">Reset Chart</span></p>
-                                        <div class="col-lg-12 staff" style="height:150px"></div>
-                                    </div>
-                                    <div class=" col-md-6" style="min-width:250px;">
-                                        <h5>Patients Per Day</h5>
-                                        <p class="reset_chart"><span class="patient_reset">Reset Chart</span></p>
-                                        <div class="col-lg-12 patients" style="height:150px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-8">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card" id="facility-class-card">
-                                <div class="header-icon" style="display:inline-block; float:right"></div>
-                                <div class="card-title" >
-                                    <h4>Facility Classification</h4>
-                                </div>
-                                <div class="card-body row">
-                                    <div class="col-md-6">
-                                        <h5>Affiliation</h5>
-                                        <p class="reset_chart"><span class="affiliation_reset">Reset </span>|
-                                        Sort by <span class="reset affiliation_value" style="color:blue">Count</span>
-                                        or by <span class="reset affiliation_name" style="color:blue">Name</span></p>
-                                        <div class="affiliation col-lg-12" style="margin-left:-25px;height:225px;overflow: auto"></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h5>Sector</h5>
-                                        <p class="reset_chart"><span class="sector_reset">Reset </span>|
-                                        Sort by <span class="reset sector_value" style="color:blue">Count</span>
-                                        or by <span class="reset sector_name" style="color:blue">Name</span></p>
-                                        <div class="public_private col-lg-12"  style="margin-left:-25px;height:225px;overflow: auto"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card" id="administrative-card">
-                                <div class="header-icon" style="display:inline-block; float:right"></div>
-                                <div class="card-title" >
-                                    <h4>Administrative District</h4>
-                                </div>
-                                <div class="card-body row">
-                                    <div class="col-md-6">
-                                        <h5>Regions</h5>
-                                        <p class="reset_chart"><span class="region_reset">Reset </span>|
-                                        Sort by <span class="reset region_value" style="color:blue">Count</span>
-                                        or by <span class="reset region_name" style="color:blue">Name</span></p>
-                                        <div class="region col-lg-12" style="margin-left:-25px;height:225px;overflow: auto"></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h5>Prefecture</h5>
-                                        <p class="reset_chart"><span class="prefecture_reset">Reset </span>|
-                                        Sort by <span class="reset prefecture_value" style="color:blue">Count</span>
-                                        or by <span class="reset prefecture_name" style="color:blue">Name</span></p>
-                                        <div class="prefecture col-lg-12"  style="margin-left:-25px;height:225px;overflow: auto"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="card" id="network-card">
-                                <div class="header-icon" style="display:inline-block; float:right"></div>
-                                <div class="card-title" >
-                                    <h4>Facility Network</h4>
-                                </div>
-                                <div class="card-body row">
-                                            <div class="col-lg-7">
-                                                <h3 class='poc_graph'><a class="btn btn-primary btn-xl js-scroll-trigger" href="#report-card">See The Survey Data</a></h3>
-                                            </div>
-                                            <div class="col-lg-5">
-                                                <select class="custom-select d-block w-100" id="overlay_map" required="" style="display: inline-block;">
-                                                  <option value="">Choose Inaccessibility Overlay...</option>
-                                                  <!--<option value="distance_access" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access</option>-->
-                                                  <option value="distance_access_hb" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access HB Sahli</option>
-                                                  <option value="distance_access_hiv" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access HIV</option>
-                                                  <option value="distance_access_palu" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access Palu</option>
-                                                  <option value="distance_access_widal" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Access Widal</option>
-
-                                                  <option value="distance_pop_access_hb" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access HB Sahli</option>
-                                                  <option value="distance_pop_access_hiv" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access HIV</option>
-                                                  <option value="distance_pop_access_palu" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access Palu</option>
-                                                  <option value="distance_pop_access_widal" title="Distance access is a calculation of the minimum distance from every point in Guinea to a lab in our data set. The RDT specific distance access is the minimum distance from every point in Guinea to a lab in our data set that has that specific RDT.">Dist Pop Access Widal</option>
-
-
-                                                  <!--  <option value="walking_outside_20km">Walking Access 20Km</option>-->
-                                                  <option value="walking_outside_20km_hb">Walking Access 20Km HB Sahli</option>
-                                                  <option value="walking_outside_20km_hiv">Walking Access 20Km HIV</option>
-                                                  <option value="walking_outside_20km_palu">Walking Access 20Km Palu</option>
-                                                  <option value="walking_outside_20km_widal">Walking Access 20Km Widal</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-12" id="map"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="card" id="training-card">
-                                <div class="header-icon" style="display:inline-block; float:right"></div>
-                                <div class="card-title" >
-                                </div>
-                                <div class="card-body row">
-                                    <div class="col-md-12">
-                                        <h4>Training Needs</h4>
-                                        <p class="reset_chart"><span class="training_reset">Reset </span>|
-                                        Sort by <span class="reset training_value" style="color:blue">Count</span>
-                                        or by <span class="reset training_name" style="color:blue">Name</span></p>
-                                    </div>
-                                    <div class="col-md-12 training" style="height:475px;overflow: auto"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="card" id="report-card">
-                    <div class="header-icon" style="display:inline-block; float:right"></div>
-                    <div class="card-title" >
-                    </div>
-                    <div class="card-body row">
-                        <div class="col-lg-12">
-                            <h4 style="padding-bottom:15px;">Facility Report | <button  class="btn-sm btn-primary download_table" type="submit">Download Selection</button></h4>
-                        </div>
-                        <div class="dc-data-grid col-lg-12" style="overflow: auto;height:600px;" id="right1a" ></div>
-                    </div>
-                </div>
-            </div>
+    <!-- Section: Map &amp; access -->
+    <section class="dash-section" id="map-section">
+      <div class="card" id="network-card">
+        <div class="header-icon"></div>
+        <div class="card-title">
+          <h4>Facility network &amp; access overlays</h4>
+          <div class="overlay-controls overlay-controls--inline">
+            <label for="overlay_map">Map overlay:</label>
+            <select class="custom-select" id="overlay_map">
+              <option value="">&mdash; None &mdash;</option>
+              <optgroup label="Distance to nearest facility">
+                <option value="distance_access_hb">&hellip; for HB Sahli (anemia)</option>
+                <option value="distance_access_hiv">&hellip; for HIV RDT (TDR HIV)</option>
+                <option value="distance_access_palu">&hellip; for Malaria RDT (TDR Palu)</option>
+                <option value="distance_access_widal">&hellip; for Widal (typhoid)</option>
+              </optgroup>
+              <optgroup label="Population &times; distance (access burden)">
+                <option value="distance_pop_access_hb">&hellip; for HB Sahli</option>
+                <option value="distance_pop_access_hiv">&hellip; for HIV RDT</option>
+                <option value="distance_pop_access_palu">&hellip; for Malaria RDT</option>
+                <option value="distance_pop_access_widal">&hellip; for Widal</option>
+              </optgroup>
+              <optgroup label="Population outside 20 km walkshed">
+                <option value="walking_outside_20km_hb">&hellip; for HB Sahli</option>
+                <option value="walking_outside_20km_hiv">&hellip; for HIV RDT</option>
+                <option value="walking_outside_20km_palu">&hellip; for Malaria RDT</option>
+                <option value="walking_outside_20km_widal">&hellip; for Widal</option>
+              </optgroup>
+            </select>
+            <span class="overlay-help" tabindex="0" aria-label="Help">?
+              <span class="overlay-help-popover" role="tooltip">
+                <p><b>Distance to nearest facility</b> &mdash; minimum kilometers from any point in Guinea to a facility offering this test.</p>
+                <p><b>Population &times; distance</b> &mdash; population-weighted access burden; high values flag dense areas with poor access.</p>
+                <p><b>Population outside 20 km walkshed</b> &mdash; populations beyond a 20 km walking radius from a facility offering this test.</p>
+              </span>
+            </span>
+          </div>
         </div>
+        <div class="card-body row">
+          <div class="col-md-12 card-intro">
+            <p>Lab tests often can&rsquo;t be processed where they&rsquo;re collected &mdash; samples travel up the network from <b>center &rarr; prefecture &rarr; region &rarr; national</b>. These overlays measure <b>how far that journey is</b> for each rapid test, three ways: distance to the nearest capable facility, population &times; distance (where access burden concentrates), or population beyond a 20&nbsp;km walkshed.</p>
+            <p class="meta"><b>Why measure?</b> Cold-chain storage has a maximum viable transport time, and rainy-season road washouts can break the network. Route estimates come from Google Maps and may not match ground conditions.</p>
+          </div>
+          <div class="col-md-12" id="map"></div>
+          <div class="map-legend" aria-label="Transport route legend">
+            <img src="static/site/img/transport_legend_titled3.png" alt="Transport route color legend">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </main><!-- /.canvas -->
+
+    <!-- Column 2: Filters ribbon (collapsible like About; capabilities · where · what · capacity) -->
+    <aside class="filters-ribbon" id="filters-ribbon" aria-label="Filters">
+      <button class="ribbon-tab" type="button" id="filters-toggle" aria-expanded="false" aria-controls="filters-panel">
+        <span class="ribbon-tab-text">Filter facilities</span>
+      </button>
+      <div class="ribbon-panel" id="filters-panel">
+
+    <!-- Section: Capabilities -->
+    <section class="dash-section" id="capabilities">
+      <h2 class="section-title">Capabilities</h2>
+      <div class="card" id="amenity-card">
+        <div class="header-icon"></div>
+        <div class="card-title"><h4>What does this facility offer?</h4></div>
+        <div class="card-body row">
+          <div class="col-md-12">
+            <div class="filter-block">
+              <span class="filter-block-label">Amenities</span>
+              <form class="chip-group">
+                <label class="chip-label"><input id="phone" type="checkbox" value="Phone" class="checkbox"> Phone</label>
+                <label class="chip-label"><input id="fax" type="checkbox" value="Fax" class="checkbox"> Fax</label>
+                <label class="chip-label"><input id="computer" type="checkbox" value="Computer" class="checkbox"> Computer</label>
+                <label class="chip-label"><input id="internet" type="checkbox" value="Internet" class="checkbox"> Internet</label>
+                <label class="chip-label"><input id="electricity_existence" type="checkbox" value="Electricity" class="checkbox"> Electricity</label>
+              </form>
+            </div>
+            <div class="filter-block">
+              <span class="filter-block-label">Rapid diagnostic tests</span>
+              <form class="chip-group">
+                <label class="chip-label"><input id="tdr_palu" type="checkbox" value="TDR_Palu" class="checkbox"> Malaria (TDR Palu)</label>
+                <label class="chip-label"><input id="tdr_hiv" type="checkbox" value="TDR_HIV" class="checkbox"> HIV (TDR HIV)</label>
+                <label class="chip-label"><input id="widal" type="checkbox" value="Widal" class="checkbox"> Widal (typhoid)</label>
+                <label class="chip-label"><input id="hb_sahli" type="checkbox" value="Hb_Sahli" class="checkbox"> HB Sahli (anemia)</label>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Where -->
+    <section class="dash-section" id="where">
+      <h2 class="section-title">Where</h2>
+      <div class="card" id="administrative-card">
+        <div class="header-icon"></div>
+        <div class="card-title"><h4>Administrative district</h4></div>
+        <div class="card-body row">
+          <div class="col-md-12">
+            <h5>Region (R&eacute;gion)</h5>
+            <p class="reset_chart">
+              <span class="region_reset">Clear</span>
+              &nbsp;<span class="sort-toggle">Sort: <a class="reset region_value">count</a> | <a class="reset region_name">name</a></span>
+            </p>
+            <div class="region chart-md"></div>
+          </div>
+          <div class="col-md-12">
+            <h5>Prefecture (Pr&eacute;fecture)</h5>
+            <p class="reset_chart">
+              <span class="prefecture_reset">Clear</span>
+              &nbsp;<span class="sort-toggle">Sort: <a class="reset prefecture_value">count</a> | <a class="reset prefecture_name">name</a></span>
+            </p>
+            <div class="prefecture chart-md"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: What -->
+    <section class="dash-section" id="what">
+      <h2 class="section-title">What kind of facility</h2>
+      <div class="card" id="facility-class-card">
+        <div class="header-icon"></div>
+        <div class="card-title"><h4>Facility classification</h4></div>
+        <div class="card-body row">
+          <div class="col-md-12">
+            <h5>Affiliation</h5>
+            <p class="reset_chart">
+              <span class="affiliation_reset">Clear</span>
+              &nbsp;<span class="sort-toggle">Sort: <a class="reset affiliation_value">count</a> | <a class="reset affiliation_name">name</a></span>
+            </p>
+            <div class="affiliation chart-md"></div>
+          </div>
+          <div class="col-md-12">
+            <h5>Sector</h5>
+            <p class="reset_chart">
+              <span class="sector_reset">Clear</span>
+              &nbsp;<span class="sort-toggle">Sort: <a class="reset sector_value">count</a> | <a class="reset sector_name">name</a></span>
+            </p>
+            <div class="public_private chart-md"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Capacity (training + staff + patients combined into one card) -->
+    <section class="dash-section" id="capacity">
+      <h2 class="section-title">Capacity &amp; training</h2>
+      <div class="card" id="training-card">
+        <div class="header-icon"></div>
+        <div class="card-title"><h4>Training, staff &amp; throughput</h4></div>
+        <div class="card-body row">
+          <div class="col-md-12">
+            <h5>Training needs</h5>
+            <p class="reset_chart">
+              <span class="training_reset">Clear</span>
+              &nbsp;<span class="sort-toggle">Sort: <a class="reset training_value">count</a> | <a class="reset training_name">name</a></span>
+            </p>
+            <div class="training chart-tall"></div>
+          </div>
+          <div class="col-md-12 capacity-numeric">
+            <h5>Total staff</h5>
+            <p class="reset_chart"><span class="staff_reset">Clear</span></p>
+            <div class="staff chart-sm"></div>
+          </div>
+          <div class="col-md-12 capacity-numeric">
+            <h5>Patients per day</h5>
+            <p class="reset_chart"><span class="patient_reset">Clear</span></p>
+            <div class="patients chart-sm"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      </div><!-- /.ribbon-panel -->
+    </aside><!-- /.filters-ribbon -->
+
+    <!-- Column 3: About ribbon -->
+    <aside class="about-ribbon" id="about-ribbon" aria-label="About this dataset">
+    <button class="ribbon-tab" type="button" id="ribbon-toggle" aria-expanded="false" aria-controls="ribbon-panel">
+      <span class="ribbon-tab-text">About this dataset</span>
+    </button>
+    <div class="ribbon-panel" id="ribbon-panel">
+      <h3>About</h3>
+      <p class="lede">An interactive view over a 2016 LAB-NET survey of ~106 medical facilities in Guinea &mdash; sample-transport routes, lab capabilities, and three measures of geographic access by rapid test type.</p>
+
+      <p class="caveat">Facility locations are real surveyed sites. Survey response values shown in this public version have been randomized to protect respondent privacy.</p>
+
+      <h4>How to use</h4>
+      <ul>
+        <li>Click any chart bar or map cluster to filter &mdash; all other views update.</li>
+        <li>Use the Capabilities chips to narrow by amenity or rapid test.</li>
+        <li>The map overlay shows access burden by test type.</li>
+        <li>Mouseover a facility to see possible sample-transport routes.</li>
+      </ul>
+
+      <h4>Reading the map</h4>
+      <p class="meta">Markers cluster by administrative level &mdash; national (orange), regional (purple), prefecture (green), and center-level (blue).</p>
+
+      <h4>Transport legend</h4>
+      <img src="static/site/img/transport_legend_titled3.png" alt="Transport route color legend" class="ribbon-legend-img">
+
+      <h4>Heatmap methodology</h4>
+      <p class="meta">The three inaccessibility overlays were developed for the ASTMH 2018 poster <i>Spatial Analysis of Health Facility Access in Guinea</i>:</p>
+      <ul class="acknowledgments">
+        <li><b>PSU Applied Biological &amp; Biosecurity Research Lab</b><br>Maciej Boni, Kory Blose, Stephen Fast, Robbie Fraleigh</li>
+        <li><b>Fondation M&eacute;rieux</b><br>Siaka Ouattara, Moussa Cond&eacute;, Marcel Yaradouno, Isabelle Amblard</li>
+        <li><b>Guinea Ministry of Health &amp; Public Hygiene</b><br>Mamadou S. Bah</li>
+      </ul>
+      <p class="meta">LAB-NET partners: French Ministry of Foreign Affairs, Expertise France, Institut Pasteur. Survey collection by Fondation M&eacute;rieux. Route estimates from Google Maps.</p>
+
+      <h4>This dashboard</h4>
+      <p class="meta">Interactive layout, filtering, and web design by <b>Robbie Fraleigh</b>. Built with D3.js, dc.js (crossfilter), and Leaflet.</p>
+
+      <p class="copyright meta">&copy; 2018 The Pennsylvania State University &middot; <a href="https://www.psu.edu/copyright-information">copyright info</a></p>
     </div>
+  </aside>
+
+  </div><!-- /.primary-shell -->
+
+  <!-- Section: Report (breaks out of the 3-col grid; full width below) -->
+  <section class="dash-section" id="report">
+    <h2 class="section-title">Facility report</h2>
+    <div class="card" id="report-card">
+      <div class="header-icon"></div>
+      <div class="card-title">
+        <h4>Detailed facility list</h4>
+        <button type="submit" class="btn-primary download_table">&darr; Download CSV</button>
+      </div>
+      <div class="card-body row">
+        <div class="dc-data-grid col-lg-12" id="right1a"></div>
+        <div class="grid-empty" id="grid-empty" hidden>
+          <p><b>No facilities match these filters.</b></p>
+          <p class="meta"><a href="javascript:dc.filterAll();dc.renderAll();" class="btn-link">Reset all filters</a> to see all facilities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
 
     <script>
     $(function() {
@@ -1916,5 +2901,325 @@ d3.select('#map').style('height', '500px').style('width', $('div#network-card').
 
     <!-- Custom scripts for this template -->
     <script src="static/site/js/stylish-portfolio.js"></script>
+
+    <!-- ===== Redesign behaviors: hero fade, scroll-spy, ribbon, states ===== -->
+    <script>
+    (function () {
+      'use strict';
+
+      // ---- Hero: stays in normal document flow; CTA smooth-scrolls past it.
+      //      Target #map-section (always visible in the canvas column) rather than
+      //      a section inside the filter panel, since the panel is laid out at its
+      //      full open width and overflow-clipped — scrolling to it can trigger
+      //      horizontal scroll that shifts the filter tab off-screen.
+      var openBtn = document.getElementById('btn-open-dashboard');
+      if (openBtn) {
+        openBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var first = document.getElementById('map-section');
+          if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+      // ---- Scroll-spy on app-bar anchor nav ----
+      var navLinks = document.querySelectorAll('.appbar-nav a');
+      var sections = [];
+      navLinks.forEach(function (a) {
+        var id = a.getAttribute('data-section');
+        var el = id && document.getElementById(id);
+        if (el) sections.push({ id: id, el: el, link: a });
+      });
+      if ('IntersectionObserver' in window && sections.length) {
+        var spy = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var id = entry.target.id;
+              navLinks.forEach(function (a) {
+                a.classList.toggle('is-active', a.getAttribute('data-section') === id);
+              });
+            }
+          });
+        }, { rootMargin: '-50% 0px -45% 0px', threshold: 0 });
+        sections.forEach(function (s) { spy.observe(s.el); });
+      }
+      // Smooth-scroll on app-bar anchor clicks (hero stays above; user can scroll back up)
+      navLinks.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var id = a.getAttribute('data-section');
+          var target = id && document.getElementById(id);
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, '', '#' + id);
+        });
+      });
+
+      // ---- About ribbon toggle (target the primary-shell grid) ----
+      var shell = document.querySelector('.primary-shell');
+      var ribbonBtn = document.getElementById('ribbon-toggle');
+      if (shell && ribbonBtn) {
+        ribbonBtn.addEventListener('click', function () {
+          var open = shell.classList.toggle('ribbon-open');
+          ribbonBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      }
+
+      // ---- Filters ribbon toggle (collapsed by default, hint dismisses on first open) ----
+      var filtersBtn = document.getElementById('filters-toggle');
+      var hintEl = document.getElementById('hint-filters');
+      function dismissHint() { if (hintEl) hintEl.classList.add('dismissed'); }
+      function openFilters() {
+        if (!shell) return;
+        if (!shell.classList.contains('filters-open')) {
+          shell.classList.add('filters-open');
+          if (filtersBtn) filtersBtn.setAttribute('aria-expanded', 'true');
+        }
+        dismissHint();
+      }
+      if (shell && filtersBtn) {
+        filtersBtn.addEventListener('click', function () {
+          var open = shell.classList.toggle('filters-open');
+          filtersBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          dismissHint();
+        });
+      }
+      // Clicking the hint opens the filters too
+      if (hintEl) {
+        hintEl.addEventListener('click', function () {
+          openFilters();
+        });
+      }
+      // App-bar anchor clicks for filter sections should open the ribbon first
+      var filterSectionIds = ['capabilities', 'where', 'what', 'capacity'];
+      document.querySelectorAll('.appbar-nav a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          var id = a.getAttribute('data-section');
+          if (filterSectionIds.indexOf(id) !== -1) {
+            openFilters();
+          }
+        }, true); // capture phase so this runs before the existing scroll handler
+      });
+      // Hint visibility: hidden by default; only shown while the filters-ribbon is
+      // visible in the viewport (so it doesn't float over the splash on page load),
+      // and permanently dismissed once the user opens the filters once.
+      if (hintEl) {
+        hintEl.classList.add('dismissed');
+        var ribbonEl = document.getElementById('filters-ribbon');
+        var hintSeen = function () { return !!sessionStorage.getItem('filtersHintSeen'); };
+        var markSeen = function () { sessionStorage.setItem('filtersHintSeen', '1'); };
+        if (ribbonEl && 'IntersectionObserver' in window) {
+          var hintObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting && !hintSeen()) {
+                hintEl.classList.remove('dismissed');
+              } else {
+                hintEl.classList.add('dismissed');
+              }
+            });
+          }, { threshold: 0.3 });
+          hintObs.observe(ribbonEl);
+        }
+        // Mark as permanently seen after first open via either the tab or the hint
+        if (filtersBtn) {
+          filtersBtn.addEventListener('click', markSeen, { once: true });
+        }
+        hintEl.addEventListener('click', markSeen, { once: true });
+      }
+
+      // ---- App-bar Reset filters ----
+      var resetBtn = document.getElementById('btn-reset-all');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+          if (window.dc) { dc.filterAll(); dc.renderAll(); }
+          // Also clear amenity / RDT checkboxes (mirrors dc.filterAll for non-dc filters)
+          document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked')
+            .forEach(function (cb) { cb.checked = false; cb.dispatchEvent(new Event('change', { bubbles: true })); });
+        });
+      }
+
+      // ---- Hide loading state once any chart or the map has rendered ----
+      var canvas = document.getElementById('canvas');
+      var loadingEl = document.getElementById('app-loading');
+      if (loadingEl) {
+        var hideLoading = function () {
+          if (canvas) canvas.classList.add('is-loaded');
+          loadingEl.setAttribute('hidden', '');
+        };
+        var rendered = function () {
+          // Charts now live in .filters-rail and the map is in #map; check the whole document.
+          return !!document.querySelector('.dc-chart svg, #map.leaflet-container, #map .leaflet-pane');
+        };
+        if (rendered()) {
+          hideLoading();
+        } else {
+          var loadObs = new MutationObserver(function () {
+            if (rendered()) { hideLoading(); loadObs.disconnect(); }
+          });
+          loadObs.observe(document.body, { childList: true, subtree: true });
+          // Belt-and-suspenders: hide spinner after 12s no matter what so it can't stick.
+          setTimeout(function () { hideLoading(); loadObs.disconnect(); }, 12000);
+        }
+      }
+
+      // ---- Empty data-grid state ----
+      var emptyEl = document.getElementById('grid-empty');
+      var grid = document.getElementById('right1a');
+      if (emptyEl && grid) {
+        var checkEmpty = function () {
+          var hasItems = !!grid.querySelector('.dc-grid-item, .dc-grid-top, tr');
+          if (hasItems) emptyEl.setAttribute('hidden', '');
+          else emptyEl.removeAttribute('hidden');
+        };
+        var emptyObs = new MutationObserver(checkEmpty);
+        emptyObs.observe(grid, { childList: true, subtree: true });
+      }
+
+      // ---- Sort-toggle visual state on click (purely visual — dc.js sort handler is already wired in chart wiring) ----
+      document.querySelectorAll('.sort-toggle').forEach(function (group) {
+        var links = group.querySelectorAll('a.reset');
+        links.forEach(function (link) {
+          link.addEventListener('click', function () {
+            links.forEach(function (l) { l.classList.remove('is-active'); });
+            link.classList.add('is-active');
+          });
+        });
+      });
+
+      // ---- Active filters bar: enumerate binary checkboxes + dc.js chart filters ----
+      var afEl = document.getElementById('active-filters');
+
+      // Friendly labels for chart anchor classes (used by .anchorName())
+      var chartLabels = {
+        region: 'Region',
+        prefecture: 'Prefecture',
+        affiliation: 'Affiliation',
+        public_private: 'Sector',
+        training: 'Training',
+        staff: 'Staff',
+        patients: 'Patients/day'
+      };
+      // Friendly labels for binary checkbox values
+      var binaryLabels = {
+        Phone: 'Phone', Fax: 'Fax', Computer: 'Computer', Internet: 'Internet', Electricity: 'Electricity',
+        TDR_Palu: 'Malaria RDT', TDR_HIV: 'HIV RDT', Widal: 'Widal', Hb_Sahli: 'HB Sahli'
+      };
+
+      function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+      });}
+      function titleish(s){
+        return String(s).replace(/_/g,' ').replace(/\w\S*/g, function(t){
+          return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
+        });
+      }
+
+      function collectActiveFilters() {
+        var chips = [];
+
+        // Binary chip filters
+        document.querySelectorAll('.chip-group input[type="checkbox"]:checked').forEach(function (cb) {
+          var raw = cb.value || cb.id;
+          var label = binaryLabels[raw] || titleish(raw);
+          chips.push({
+            text: label,
+            remove: function () {
+              cb.checked = false;
+              cb.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          });
+        });
+
+        // dc.js categorical filters
+        if (window.dc && dc.chartRegistry) {
+          dc.chartRegistry.list().forEach(function (chart) {
+            try {
+              var filters = chart.filters && chart.filters();
+              if (!filters || !filters.length) return;
+              var name = '';
+              try { name = chart.anchorName().replace(/^\./, ''); } catch (e) { name = ''; }
+              var prettyName = chartLabels[name] || titleish(name);
+              filters.forEach(function (f) {
+                var fv = (f && typeof f === 'object' && f.length) ? f.join(' – ') : String(f);
+                chips.push({
+                  text: prettyName + ': ' + titleish(fv),
+                  remove: function () {
+                    chart.filter(f);              // toggling off
+                    if (chart.redrawGroup) chart.redrawGroup();
+                    else chart.redraw();
+                  }
+                });
+              });
+            } catch (e) { /* ignore non-filterable charts */ }
+          });
+        }
+
+        return chips;
+      }
+
+      function renderActiveFilters() {
+        if (!afEl) return;
+        var chips = collectActiveFilters();
+        if (!chips.length) {
+          afEl.hidden = true;
+          afEl.innerHTML = '';
+          return;
+        }
+        afEl.hidden = false;
+        var html = '<span class="active-filters-label">Filtering by</span>';
+        chips.forEach(function (c, i) {
+          html += '<span class="active-chip" data-i="' + i + '">' +
+                    '<span class="active-chip-text">' + escapeHtml(c.text) + '</span>' +
+                    '<button type="button" aria-label="Remove ' + escapeHtml(c.text) + '">×</button>' +
+                  '</span>';
+        });
+        html += '<button type="button" class="active-clear-all">Clear all</button>';
+        afEl.innerHTML = html;
+
+        afEl.querySelectorAll('.active-chip').forEach(function (chip) {
+          var i = parseInt(chip.getAttribute('data-i'), 10);
+          chip.querySelector('button').addEventListener('click', function () {
+            try { chips[i].remove(); } catch (e) {}
+            // Defer rebuild so dc.js redraw can settle
+            setTimeout(renderActiveFilters, 50);
+          });
+        });
+        var clearAll = afEl.querySelector('.active-clear-all');
+        if (clearAll) clearAll.addEventListener('click', function () {
+          // Remove binary checkboxes first
+          document.querySelectorAll('.chip-group input[type="checkbox"]:checked').forEach(function (cb) {
+            cb.checked = false;
+            cb.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+          // Then dc.js filters
+          if (window.dc) { dc.filterAll(); dc.renderAll(); }
+          setTimeout(renderActiveFilters, 50);
+        });
+      }
+
+      // Hook into dc.js: rebuild on every render (filter changes trigger renderlet)
+      var dcReadyPoll = setInterval(function () {
+        if (window.dc && dc.chartRegistry && dc.chartRegistry.list().length > 0) {
+          clearInterval(dcReadyPoll);
+          dc.chartRegistry.list().forEach(function (chart) {
+            try { chart.on('renderlet.activeFilters', renderActiveFilters); } catch (e) {}
+            try { chart.on('filtered.activeFilters', renderActiveFilters); } catch (e) {}
+          });
+          renderActiveFilters();
+        }
+      }, 200);
+      setTimeout(function () { clearInterval(dcReadyPoll); }, 12000);
+
+      // Also rebuild whenever a binary chip toggles
+      document.addEventListener('change', function (e) {
+        if (e.target && e.target.matches && e.target.matches('.chip-group input[type="checkbox"]')) {
+          setTimeout(renderActiveFilters, 50);
+        }
+      });
+    })();
+    </script>
+    <style>
+      /* Active sort link visual (kept here near the JS that drives it) */
+      .sort-toggle a.is-active { color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+    </style>
 </body>
 </html>
